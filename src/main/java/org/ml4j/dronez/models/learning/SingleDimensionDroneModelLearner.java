@@ -16,26 +16,42 @@
 package org.ml4j.dronez.models.learning;
 
 import org.ml4j.dronez.NumericAction;
+import org.ml4j.dronez.PositionDeltaWithVelocity;
 import org.ml4j.dronez.PositionVelocityWithRecentActions;
+import org.ml4j.dronez.VelocityAndRecentActions;
+import org.ml4j.dronez.histories.SingleDimensionPositionDeltaStateActionSequenceHistory;
 import org.ml4j.dronez.models.SingleDimensionDroneModel;
 import org.ml4j.mdp.Model;
 import org.ml4j.mdp.StateActionSequenceHistory;
 
+
 /**
- * Now that we have amended our DroneModel so that it uses 4 independent Models for 4 dimensions, the revised goal of
- * this project is to complete the implementation of this class which generates a SingleDimensionDroneModel (also to be implemented)
+ * SingleDimensionDroneModelLearner which delegates calculations to an initial-position-agnostic Model<VelocityAndRecentActions<A>, PositionDeltaWithVelocity, A>
+ * 
+ * Such a Model is learned using a SingleDimensionPositionDeltaModelLearner - yet to be implemented
  * 
  * @author Michael Lavelle
  *
  */
-public class SingleDimensionDroneModelLearner<A extends NumericAction> implements ModelLearner<PositionVelocityWithRecentActions<A>, PositionVelocityWithRecentActions<A>, A> {
+public class SingleDimensionDroneModelLearner<A extends NumericAction> implements
+		ModelLearner<PositionVelocityWithRecentActions<A>, PositionVelocityWithRecentActions<A>, A> {
 
 	@Override
 	public Model<PositionVelocityWithRecentActions<A>, PositionVelocityWithRecentActions<A>, A> learnModel(
 			StateActionSequenceHistory<PositionVelocityWithRecentActions<A>, PositionVelocityWithRecentActions<A>, A> stateActionStateHistory) {
-				return new SingleDimensionDroneModel<A>();
 
-	
+		// Learn a position delta with velocity and recent actions model
+		StateActionSequenceHistory<VelocityAndRecentActions<A>, PositionDeltaWithVelocity, A> positionDeltaHistory = new SingleDimensionPositionDeltaStateActionSequenceHistory<A>(
+				stateActionStateHistory);
+		Model<VelocityAndRecentActions<A>, PositionDeltaWithVelocity, A> delegatedModel = createSingleDimensionPositionDeltaModelLearner().learnModel(
+				positionDeltaHistory);
+
+		return new SingleDimensionDroneModel<A>(delegatedModel);
+
+	}
+
+	private SingleDimensionPositionDeltaModelLearner<A> createSingleDimensionPositionDeltaModelLearner() {
+		return new SingleDimensionPositionDeltaModelLearner<A>();
 	}
 
 }

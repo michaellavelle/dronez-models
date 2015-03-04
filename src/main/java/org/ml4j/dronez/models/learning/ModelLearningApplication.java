@@ -53,10 +53,11 @@ public class ModelLearningApplication<S extends Serializable,T extends Serializa
 		StateActionSequenceHistory<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> history = StateActionSequenceHistoryConvertingLoader.getStateActionSequenceHistory("allStateActionHistory");
 				
 		// Create our model learner.  For now this is DummyModelLearner - objective is to create a real implementation
-		ModelLearner<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> modelLearner = new DummyModelLearner();
+		ModelLearner<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> modelLearner = new DroneModelLearner();
 		
 		// Create a model learning application
 		ModelLearningApplication<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> modelLearningApplication = new ModelLearningApplication<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction>(modelLearner);
+		
 		
 		
 		// Learn model from history, and serialize

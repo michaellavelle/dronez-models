@@ -24,9 +24,9 @@ import org.ml4j.mdp.StateAction;
 import org.ml4j.mdp.StateActionSequenceHistory;
 
 /**
- *  * Encapuslates the state action sequence history for the Forward/Back dimension.
-	 * 
-	 * Constructs this history given an all-dimensions history
+ * Encapuslates the state action sequence history for the Forward/Back dimension.
+ * 
+ * Constructs this history given an all-dimensions history
  * 
  * @author Michael Lavelle
  *

@@ -17,8 +17,8 @@ package org.ml4j.dronez.histories;
 
 import org.ml4j.dronez.DroneAction;
 import org.ml4j.dronez.DroneStateWithRecentActions;
-import org.ml4j.dronez.SpinAction;
 import org.ml4j.dronez.PositionVelocityWithRecentActions;
+import org.ml4j.dronez.SpinAction;
 import org.ml4j.mapping.LabeledData;
 import org.ml4j.mdp.StateAction;
 import org.ml4j.mdp.StateActionSequenceHistory;
