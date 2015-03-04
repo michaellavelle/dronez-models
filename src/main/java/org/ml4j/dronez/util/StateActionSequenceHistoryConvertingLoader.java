@@ -52,7 +52,7 @@ public class StateActionSequenceHistoryConvertingLoader {
 		// Convert to a history with recent actions encapsulated as part of the state
 
 		SerializationHelper serializationHelper = new SerializationHelper(
-				ModelClientDemo.class.getClassLoader(),
+				StateActionSequenceHistoryConvertingLoader.class.getClassLoader(),
 				"org/ml4j/dronez/histories");
 
 		@SuppressWarnings("unchecked")
