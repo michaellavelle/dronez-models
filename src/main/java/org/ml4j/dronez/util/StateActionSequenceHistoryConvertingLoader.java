@@ -31,7 +31,6 @@ import org.ml4j.dronez.SpinAction;
 import org.ml4j.dronez.SpinActionExtractor;
 import org.ml4j.dronez.UpDownAction;
 import org.ml4j.dronez.UpDownActionExtractor;
-import org.ml4j.dronez.models.factories.ModelClientDemo;
 import org.ml4j.mapping.LabeledData;
 import org.ml4j.mdp.StateAction;
 import org.ml4j.mdp.StateActionSequenceHistory;
