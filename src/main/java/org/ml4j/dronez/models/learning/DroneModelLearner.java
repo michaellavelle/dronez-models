@@ -17,7 +17,7 @@ package org.ml4j.dronez.models.learning;
 
 import org.ml4j.dronez.DroneAction;
 import org.ml4j.dronez.DroneStateWithRecentActions;
-import org.ml4j.dronez.models.DummyDroneModel;
+import org.ml4j.dronez.models.DroneModel;
 import org.ml4j.mdp.Model;
 import org.ml4j.mdp.StateActionSequenceHistory;
 
@@ -29,12 +29,12 @@ import org.ml4j.mdp.StateActionSequenceHistory;
  */
 public class DroneModelLearner implements ModelLearner<DroneStateWithRecentActions, DroneStateWithRecentActions, DroneAction> {
 
-	public final static Class<? extends Model<DroneStateWithRecentActions, DroneStateWithRecentActions, DroneAction>> MODEL_CLASS = DummyDroneModel.class;
+	public final static Class<? extends Model<DroneStateWithRecentActions, DroneStateWithRecentActions, DroneAction>> MODEL_CLASS = DroneModel.class;
 	
 	@Override
 	public Model<DroneStateWithRecentActions, DroneStateWithRecentActions, DroneAction> learnModel(
 			StateActionSequenceHistory<DroneStateWithRecentActions, DroneStateWithRecentActions, DroneAction> stateActionStateHistory) {
-		return new DummyDroneModel();
+		return new DroneModel();
 	}
 
 }

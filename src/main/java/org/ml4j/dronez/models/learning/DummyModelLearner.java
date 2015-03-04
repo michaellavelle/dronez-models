@@ -35,7 +35,7 @@ public class DummyModelLearner implements ModelLearner<DroneStateWithRecentActio
 	@Override
 	public Model<DroneStateWithRecentActions, DroneStateWithRecentActions, DroneAction> learnModel(
 			StateActionSequenceHistory<DroneStateWithRecentActions, DroneStateWithRecentActions, DroneAction> stateActionStateHistory) {
-		return new DroneModel();
+		return new DummyDroneModel();
 	}
 
 }
