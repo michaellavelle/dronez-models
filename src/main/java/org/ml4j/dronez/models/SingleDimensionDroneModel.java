@@ -40,17 +40,13 @@ public class SingleDimensionDroneModel<A extends NumericAction> implements Model
 	
 	private Model<VelocityAndRecentActions<A>,PositionDeltaWithVelocity,A> positionDeltaModel;
 
-	public SingleDimensionDroneModel(Model<VelocityAndRecentActions<A>,PositionDeltaWithVelocity,A> positionDeltaModel)
-	{
-		this.positionDeltaModel = positionDeltaModel;
-	}
-	
-	public SingleDimensionDroneModel(double minimumPosition,double maximumPosition,double minimumVelocity,double maximumVelocity,List<A> allActions )
+	public SingleDimensionDroneModel(Model<VelocityAndRecentActions<A>,PositionDeltaWithVelocity,A> positionDeltaModel,double minimumPosition,double maximumPosition,double minimumVelocity,double maximumVelocity,List<A> allActions )
 	{
 		this.minimumPosition = minimumPosition;
 		this.maximumPosition = maximumPosition;
 		this.minimumVelocity = minimumVelocity;
 		this.maximumVelocity = maximumVelocity;
+		this.positionDeltaModel = positionDeltaModel;
 	}
 	private double minimumPosition;
 	private double maximumPosition;
@@ -88,8 +84,18 @@ public class SingleDimensionDroneModel<A extends NumericAction> implements Model
 			finalStateRecentActions.add(initialStateRecentActions.get(i));
 		}
 		finalStateRecentActions.add(action);
-		// TODO Impose limits on position
-		return new PositionVelocityWithRecentActions<A>(currentState.getPosition() + endPositionDeltaState.getPosition(),endPositionDeltaState.getVelocity(),finalStateRecentActions);
+		// Impose limits on position, simulating physical barriers such as walls
+		
+		double nextPosition = currentState.getPosition() + endPositionDeltaState.getPosition();
+		if (nextPosition < minimumPosition)
+		{
+			nextPosition = minimumPosition;
+		}
+		if (nextPosition > maximumPosition)
+		{
+			nextPosition = maximumPosition;
+		}
+		return new PositionVelocityWithRecentActions<A>(nextPosition,endPositionDeltaState.getVelocity(),finalStateRecentActions);
 	
 	}
 

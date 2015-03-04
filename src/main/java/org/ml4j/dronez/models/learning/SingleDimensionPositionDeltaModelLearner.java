@@ -1,5 +1,15 @@
 package org.ml4j.dronez.models.learning;
 
+import java.util.List;
+
+import org.ml4j.algorithms.impl.RegularizationContext;
+import org.ml4j.algorithms.impl.SimpleRegularizationContext;
+import org.ml4j.algorithms.supervised.LinearRegressionMultiAlgorithm;
+import org.ml4j.algorithms.supervised.LinearRegressionMultiHypothesisFunction;
+import org.ml4j.algorithms.supervised.impl.LinearRegressionMultiAlgorithmImpl;
+import org.ml4j.dronez.DroneStateActionLinearRegressionFeaturesMapper;
+import org.ml4j.dronez.DroneStatePositionVelocityLabelMapper;
+import org.ml4j.dronez.LinearApproximationDeltaPositionWithVelocityModel;
 import org.ml4j.dronez.NumericAction;
 import org.ml4j.dronez.PositionDeltaWithVelocity;
 import org.ml4j.dronez.VelocityAndRecentActions;
@@ -7,22 +17,48 @@ import org.ml4j.mdp.Model;
 import org.ml4j.mdp.StateActionSequenceHistory;
 
 /**
- * Now that we have amended our DroneModel so that it uses 4 independent SingleDimensionDroneModels
- * for 4 dimensions each of which delegates to a learned Model<VelocityAndRecentActions<A>, PositionDeltaWithVelocity, A>, 
- * the revised goal of this project is to complete the implementation of this class which generates such a learned Model
- * 
  * @author Michael Lavelle
  *
  */
 public class SingleDimensionPositionDeltaModelLearner<A extends NumericAction> implements ModelLearner<VelocityAndRecentActions<A>, PositionDeltaWithVelocity, A> {
+
+	private static final double MAX_POSITION_DELTA = 0.5d;
+	private static final double MIN_POSITION_DELTA = -0.5d;
+
+	private List<A> allActions;
+	
+	public SingleDimensionPositionDeltaModelLearner(List<A> allActions)
+	{
+		this.allActions = allActions;
+	}
 
 	
 	@Override
 	public Model<VelocityAndRecentActions<A>, PositionDeltaWithVelocity, A> learnModel(
 			StateActionSequenceHistory<VelocityAndRecentActions<A>, PositionDeltaWithVelocity, A> stateActionStateHistory) {
 		
-		// TODO
-		return null;
+		// Use Linear Regression to predict next position and velocity from current velocity, recent actions, and the latest action.
+		
+		RegularizationContext context = new SimpleRegularizationContext(10);
+		LinearRegressionMultiAlgorithm<RegularizationContext> modelLearningRegressionAlgorithm =  new LinearRegressionMultiAlgorithmImpl();;
+		LinearRegressionMultiHypothesisFunction learnedDistanceToTargetHyp = modelLearningRegressionAlgorithm
+				.getOptimalHypothesisFunction(
+						stateActionStateHistory
+								.getInitialStateActionHistory(new DroneStateActionLinearRegressionFeaturesMapper<A>()),
+								stateActionStateHistory.getEndStateHistory(new DroneStatePositionVelocityLabelMapper()), context);
+
+		System.out.println("Learned Delta Position/Velocity Hypothesis Function");
+
+		System.out.println(learnedDistanceToTargetHyp);
+
+		// Obtain a deterministic model
+		Model<VelocityAndRecentActions<A>, PositionDeltaWithVelocity, A> linearApproxDistanceToTargetModel = new LinearApproximationDeltaPositionWithVelocityModel<A>(
+				allActions, new DroneStatePositionVelocityLabelMapper(),
+				new DroneStateActionLinearRegressionFeaturesMapper<A>(), learnedDistanceToTargetHyp,
+				MAX_POSITION_DELTA - MIN_POSITION_DELTA, null, null, null, null);
+		
+	
+		return linearApproxDistanceToTargetModel;
 	}
 
 }

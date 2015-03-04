@@ -22,7 +22,7 @@ import org.ml4j.dronez.DroneAction;
 import org.ml4j.dronez.DroneState;
 import org.ml4j.dronez.DroneStateActionSequenceDisplayer;
 import org.ml4j.dronez.DroneStateWithRecentActions;
-import org.ml4j.dronez.models.learning.DummyModelLearner;
+import org.ml4j.dronez.models.learning.DroneModelLearner;
 import org.ml4j.dronez.util.StateActionSequenceHistoryConvertingLoader;
 import org.ml4j.mapping.LabeledData;
 import org.ml4j.mdp.Model;
@@ -81,7 +81,7 @@ public class ModelClientDemo {
 		// Create a serialized model factory
 		SerializedModelFactory<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> modelFactory = new SerializedModelFactory<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction>();
 		// Register a serialized model with the model factory
-		modelFactory.registerModel(DummyModelLearner.MODEL_CLASS, modelId);
+		modelFactory.registerModel(DroneModelLearner.MODEL_CLASS, modelId);
 		
 		return modelFactory;
 	}

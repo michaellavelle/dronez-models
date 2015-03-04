@@ -15,9 +15,16 @@
  */
 package org.ml4j.dronez.models.learning;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.ml4j.dronez.ForwardBackAction;
+import org.ml4j.dronez.LeftRightAction;
 import org.ml4j.dronez.NumericAction;
 import org.ml4j.dronez.PositionDeltaWithVelocity;
 import org.ml4j.dronez.PositionVelocityWithRecentActions;
+import org.ml4j.dronez.SpinAction;
+import org.ml4j.dronez.UpDownAction;
 import org.ml4j.dronez.VelocityAndRecentActions;
 import org.ml4j.dronez.histories.SingleDimensionPositionDeltaStateActionSequenceHistory;
 import org.ml4j.dronez.models.SingleDimensionDroneModel;
@@ -36,6 +43,19 @@ import org.ml4j.mdp.StateActionSequenceHistory;
 public class SingleDimensionDroneModelLearner<A extends NumericAction> implements
 		ModelLearner<PositionVelocityWithRecentActions<A>, PositionVelocityWithRecentActions<A>, A> {
 
+	private double minimumPosition;
+	private double maximumPosition;
+	private double minimumVelocity;
+	private double maximumVelocity;
+	
+	public SingleDimensionDroneModelLearner(double minimumPosition,double maximumPosition,double minimumVelocity,double maximumVelocity)
+	{
+		this.minimumPosition = minimumPosition;
+		this.maximumPosition = maximumPosition;
+		this.minimumVelocity = minimumVelocity;
+		this.maximumVelocity = maximumVelocity;
+	}
+	
 	@Override
 	public Model<PositionVelocityWithRecentActions<A>, PositionVelocityWithRecentActions<A>, A> learnModel(
 			StateActionSequenceHistory<PositionVelocityWithRecentActions<A>, PositionVelocityWithRecentActions<A>, A> stateActionStateHistory) {
@@ -43,15 +63,35 @@ public class SingleDimensionDroneModelLearner<A extends NumericAction> implement
 		// Learn a position delta with velocity and recent actions model
 		StateActionSequenceHistory<VelocityAndRecentActions<A>, PositionDeltaWithVelocity, A> positionDeltaHistory = new SingleDimensionPositionDeltaStateActionSequenceHistory<A>(
 				stateActionStateHistory);
-		Model<VelocityAndRecentActions<A>, PositionDeltaWithVelocity, A> delegatedModel = createSingleDimensionPositionDeltaModelLearner().learnModel(
+		Model<VelocityAndRecentActions<A>, PositionDeltaWithVelocity, A> delegatedModel = createSingleDimensionPositionDeltaModelLearner(
+				stateActionStateHistory.getStateActionStateSequence(0).getData().getAction()).learnModel(
 				positionDeltaHistory);
 
-		return new SingleDimensionDroneModel<A>(delegatedModel);
+		return new SingleDimensionDroneModel<A>(delegatedModel,minimumPosition,maximumPosition,minimumVelocity,maximumVelocity,getAllActions(stateActionStateHistory.getStateActionStateSequence(0).getData().getAction()));
 
 	}
+	
+	@SuppressWarnings("unchecked")
+	// Refactor this as it is a workaround
+	private List<A> getAllActions(A firstAction)
+	{
+		List<A> allActions = null;
+		if (firstAction instanceof LeftRightAction) {
+			allActions = (List<A>) Arrays.asList(LeftRightAction.ALL_ACTIONS);
+		} else if (firstAction instanceof UpDownAction) {
+			allActions = (List<A>) Arrays.asList(UpDownAction.ALL_ACTIONS);
+		} else if (firstAction instanceof ForwardBackAction) {
+			allActions = (List<A>) Arrays.asList(ForwardBackAction.ALL_ACTIONS);
+		} else if (firstAction instanceof SpinAction) {
+			allActions = (List<A>) Arrays.asList(SpinAction.ALL_ACTIONS);
+		}
+		return allActions;
+	}
 
-	private SingleDimensionPositionDeltaModelLearner<A> createSingleDimensionPositionDeltaModelLearner() {
-		return new SingleDimensionPositionDeltaModelLearner<A>();
+	
+	private SingleDimensionPositionDeltaModelLearner<A> createSingleDimensionPositionDeltaModelLearner(A firstAction) {
+		
+		return new SingleDimensionPositionDeltaModelLearner<A>(getAllActions(firstAction));
 	}
 
 }
