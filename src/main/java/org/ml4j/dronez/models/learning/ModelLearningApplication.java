@@ -73,7 +73,7 @@ public class ModelLearningApplication<S extends Serializable,T extends Serializa
 		
 		// Serialize the model, with a key of modelName
 		serializationHelper.serialize(model, modelName);
-	
+			
 	}
 	
 }

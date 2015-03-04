@@ -17,7 +17,6 @@ package org.ml4j.dronez.models.learning;
 
 import org.ml4j.dronez.DroneAction;
 import org.ml4j.dronez.DroneStateWithRecentActions;
-import org.ml4j.dronez.models.DroneModel;
 import org.ml4j.dronez.models.DummyDroneModel;
 import org.ml4j.mdp.Model;
 import org.ml4j.mdp.StateActionSequenceHistory;

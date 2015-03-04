@@ -17,28 +17,51 @@ package org.ml4j.dronez.models;
 
 import org.ml4j.dronez.DroneAction;
 import org.ml4j.dronez.DroneStateWithRecentActions;
+import org.ml4j.dronez.ForwardBackAction;
+import org.ml4j.dronez.LeftRightAction;
+import org.ml4j.dronez.PositionVelocityWithRecentActions;
+import org.ml4j.dronez.SpinAction;
+import org.ml4j.dronez.UpDownAction;
 import org.ml4j.mdp.Model;
 /**
- * This class is unimplemented.  The goal of this project is to provide an implementation of this class, and to learn an optimal instance using DroneModelLearner ( also to be implemented)
+ * DroneModel which delegates to 4 single-dimension Models for left/right,up/down,forward/back and spin dimensions.
  * 
  * @author Michael Lavelle
  *
  */
 public class DroneModel implements Model<DroneStateWithRecentActions, DroneStateWithRecentActions, DroneAction> {
 
+	private Model<PositionVelocityWithRecentActions<LeftRightAction>, PositionVelocityWithRecentActions<LeftRightAction>, LeftRightAction> leftRightDroneModel;
+	private Model<PositionVelocityWithRecentActions<UpDownAction>, PositionVelocityWithRecentActions<UpDownAction>, UpDownAction> upDownDroneModel;
+	private Model<PositionVelocityWithRecentActions<ForwardBackAction>, PositionVelocityWithRecentActions<ForwardBackAction>, ForwardBackAction> forwardBackDroneModel;
+	private Model<PositionVelocityWithRecentActions<SpinAction>, PositionVelocityWithRecentActions<SpinAction>, SpinAction> spinDroneModel;
+
+	
+	public DroneModel(Model<PositionVelocityWithRecentActions<LeftRightAction>, PositionVelocityWithRecentActions<LeftRightAction>, LeftRightAction> leftRightDroneModel,
+						Model<PositionVelocityWithRecentActions<UpDownAction>, PositionVelocityWithRecentActions<UpDownAction>, UpDownAction> upDownDroneModel,
+						Model<PositionVelocityWithRecentActions<ForwardBackAction>, PositionVelocityWithRecentActions<ForwardBackAction>, ForwardBackAction> forwardBackDroneModel,
+						Model<PositionVelocityWithRecentActions<SpinAction>, PositionVelocityWithRecentActions<SpinAction>, SpinAction> spinDroneModel)
+	{
+		this.leftRightDroneModel = leftRightDroneModel;
+		this.upDownDroneModel = upDownDroneModel;
+		this.forwardBackDroneModel = forwardBackDroneModel;
+		this.spinDroneModel = spinDroneModel;
+	}
+	
+	
 	/**
 	 * 
-	 */
+	 */ 
 	private static final long serialVersionUID = 1L;
 
 	@Override
 	public DroneStateWithRecentActions getInitialState() {
-		return null;
+		return new DroneStateWithRecentActions(leftRightDroneModel.getInitialState(),upDownDroneModel.getInitialState(),forwardBackDroneModel.getInitialState(),spinDroneModel.getInitialState());
 	}
 
 	@Override
-	public DroneStateWithRecentActions getState(DroneStateWithRecentActions state, DroneAction arg1) {
-		return state;
+	public DroneStateWithRecentActions getState(DroneStateWithRecentActions state, DroneAction action) {
+		return new DroneStateWithRecentActions(leftRightDroneModel.getState(state.getLeftRightPositionVelocity(), action.getLeftRightAction()),upDownDroneModel.getState(state.getUpDownPositionVelocity(), action.getUpDownAction()),forwardBackDroneModel.getState(state.getForwardBackPositionVelocity(), action.getForwardBackAction()),spinDroneModel.getState(state.getSpinPositionVelocity(), action.getSpinAction()));
 	}
 
 }

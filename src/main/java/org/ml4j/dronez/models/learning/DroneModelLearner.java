@@ -17,12 +17,24 @@ package org.ml4j.dronez.models.learning;
 
 import org.ml4j.dronez.DroneAction;
 import org.ml4j.dronez.DroneStateWithRecentActions;
+import org.ml4j.dronez.ForwardBackAction;
+import org.ml4j.dronez.LeftRightAction;
+import org.ml4j.dronez.NumericAction;
+import org.ml4j.dronez.PositionVelocityWithRecentActions;
+import org.ml4j.dronez.SpinAction;
+import org.ml4j.dronez.UpDownAction;
+import org.ml4j.dronez.histories.ForwardBackStateActionSequenceHistory;
+import org.ml4j.dronez.histories.LeftRightStateActionSequenceHistory;
+import org.ml4j.dronez.histories.SpinStateActionSequenceHistory;
+import org.ml4j.dronez.histories.UpDownStateActionSequenceHistory;
 import org.ml4j.dronez.models.DroneModel;
 import org.ml4j.mdp.Model;
 import org.ml4j.mdp.StateActionSequenceHistory;
 
 /**
- * The goal of the this project is to complete the implementation of this class which generates a DroneModel (also to be implemented)
+ * DroneModelLearner which uses 4 instances of SingleDimensionDroneModelLearner to generate independent Models for left/right,up/down,forward/back and spin dimensions,
+ * which can then be used to construct a DroneModel 
+ *
  * 
  * @author Michael Lavelle
  *
@@ -31,10 +43,33 @@ public class DroneModelLearner implements ModelLearner<DroneStateWithRecentActio
 
 	public final static Class<? extends Model<DroneStateWithRecentActions, DroneStateWithRecentActions, DroneAction>> MODEL_CLASS = DroneModel.class;
 	
+	private <A extends NumericAction> SingleDimensionDroneModelLearner<A> createSingleDimensionDroneModelLearner(Class<A> clazz)
+	{
+		return new SingleDimensionDroneModelLearner<A>();
+	}
+
+	
 	@Override
 	public Model<DroneStateWithRecentActions, DroneStateWithRecentActions, DroneAction> learnModel(
 			StateActionSequenceHistory<DroneStateWithRecentActions, DroneStateWithRecentActions, DroneAction> stateActionStateHistory) {
-		return new DroneModel();
+		
+		
+		// Learn 4 models
+		
+		Model<PositionVelocityWithRecentActions<LeftRightAction>,PositionVelocityWithRecentActions<LeftRightAction>,LeftRightAction> leftRightModel 
+				= createSingleDimensionDroneModelLearner(LeftRightAction.class).learnModel(new LeftRightStateActionSequenceHistory(stateActionStateHistory));
+		
+		Model<PositionVelocityWithRecentActions<UpDownAction>,PositionVelocityWithRecentActions<UpDownAction>,UpDownAction> upDownModel 
+		= createSingleDimensionDroneModelLearner(UpDownAction.class).learnModel(new UpDownStateActionSequenceHistory(stateActionStateHistory));
+
+		Model<PositionVelocityWithRecentActions<ForwardBackAction>,PositionVelocityWithRecentActions<ForwardBackAction>,ForwardBackAction> forwardBackModel 
+		= createSingleDimensionDroneModelLearner(ForwardBackAction.class).learnModel(new ForwardBackStateActionSequenceHistory(stateActionStateHistory));
+
+		Model<PositionVelocityWithRecentActions<SpinAction>,PositionVelocityWithRecentActions<SpinAction>,SpinAction> spinModel 
+		= createSingleDimensionDroneModelLearner(SpinAction.class).learnModel(new SpinStateActionSequenceHistory(stateActionStateHistory));
+
+		
+		return new DroneModel(leftRightModel,upDownModel,forwardBackModel,spinModel);
 	}
 
 }
