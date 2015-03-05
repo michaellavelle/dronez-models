@@ -24,7 +24,7 @@ import org.ml4j.dronez.SpinAction;
 import org.ml4j.dronez.UpDownAction;
 import org.ml4j.mdp.Model;
 /**
- * DroneModel which delegates to 4 single-dimension Models for left/right,up/down,forward/back and spin dimensions.
+ * Stateless (in terms of drone state) DroneModel which delegates to 4 single-dimension Models for left/right,up/down,forward/back and spin dimensions.
  * 
  * @author Michael Lavelle
  *
