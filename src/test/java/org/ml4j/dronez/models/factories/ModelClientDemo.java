@@ -22,6 +22,7 @@ import org.ml4j.dronez.DroneAction;
 import org.ml4j.dronez.DroneState;
 import org.ml4j.dronez.DroneStateActionSequenceDisplayer;
 import org.ml4j.dronez.DroneStateWithRecentActions;
+import org.ml4j.dronez.PositionVelocityWithRecentActions;
 import org.ml4j.dronez.models.learning.DroneModelLearner;
 import org.ml4j.dronez.util.StateActionSequenceHistoryConvertingLoader;
 import org.ml4j.mapping.LabeledData;
@@ -62,7 +63,7 @@ public class ModelClientDemo {
 	
 	private static DroneState getInitialState(StateActionSequenceHistory<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> history)
 	{
-		DroneStateWithRecentActions s =  history.getStateActionStateSequence(0).getData().getState();
+		DroneStateWithRecentActions s =  history.getStateActionStateSequence(PositionVelocityWithRecentActions.RECENT_ACTION_COUNT).getData().getState();
 		return new DroneState(s.getLeftRightPositionVelocity(),s.getUpDownPositionVelocity(),s.getForwardBackPositionVelocity(),s.getSpinPositionVelocity());
 	}
 	
