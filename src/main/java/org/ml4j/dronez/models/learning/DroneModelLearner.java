@@ -46,7 +46,7 @@ public class DroneModelLearner implements ModelLearner<DroneStateWithRecentActio
 	
 	private <A extends NumericAction> SingleDimensionDroneModelLearner<A> createSingleDimensionDroneModelLearner(Class<A> clazz,double minimumPosition,double maximumPosition,double minimumVelocity,double maximumVelocity)
 	{
-		return new SingleDimensionDroneModelLearner<A>(minimumPosition,maximumPosition,minimumVelocity,maximumVelocity);
+		return new SingleDimensionDroneModelLearner<A>(minimumPosition,maximumPosition,minimumVelocity,maximumVelocity,clazz.getSimpleName());
 	}
 
 	

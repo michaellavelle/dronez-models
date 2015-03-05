@@ -30,6 +30,7 @@ import org.ml4j.dronez.histories.SingleDimensionPositionDeltaStateActionSequence
 import org.ml4j.dronez.models.SingleDimensionDroneModel;
 import org.ml4j.mdp.Model;
 import org.ml4j.mdp.StateActionSequenceHistory;
+import org.ml4j.util.SerializationHelper;
 
 
 /**
@@ -43,17 +44,22 @@ import org.ml4j.mdp.StateActionSequenceHistory;
 public class SingleDimensionDroneModelLearner<A extends NumericAction> implements
 		ModelLearner<PositionVelocityWithRecentActions<A>, PositionVelocityWithRecentActions<A>, A> {
 
+	private	SerializationHelper serializationHelper = new SerializationHelper(SingleDimensionDroneModelLearner.class.getClassLoader(),"org/ml4j/dronez/models");
+
+	
 	private double minimumPosition;
 	private double maximumPosition;
 	private double minimumVelocity;
 	private double maximumVelocity;
+	private String dimensionName;
 	
-	public SingleDimensionDroneModelLearner(double minimumPosition,double maximumPosition,double minimumVelocity,double maximumVelocity)
+	public SingleDimensionDroneModelLearner(double minimumPosition,double maximumPosition,double minimumVelocity,double maximumVelocity,String dimensionName)
 	{
 		this.minimumPosition = minimumPosition;
 		this.maximumPosition = maximumPosition;
 		this.minimumVelocity = minimumVelocity;
 		this.maximumVelocity = maximumVelocity;
+		this.dimensionName = dimensionName;
 	}
 	
 	@Override
@@ -67,6 +73,9 @@ public class SingleDimensionDroneModelLearner<A extends NumericAction> implement
 				stateActionStateHistory.getStateActionStateSequence(0).getData().getAction()).learnModel(
 				positionDeltaHistory);
 
+		
+		serializationHelper.serialize(delegatedModel, "droneDeltaPosition" +  dimensionName + "Model");
+		
 		return new SingleDimensionDroneModel<A>(delegatedModel,minimumPosition,maximumPosition,minimumVelocity,maximumVelocity,getAllActions(stateActionStateHistory.getStateActionStateSequence(0).getData().getAction()));
 
 	}
