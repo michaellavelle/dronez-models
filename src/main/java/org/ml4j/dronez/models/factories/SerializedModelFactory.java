@@ -36,7 +36,7 @@ public class SerializedModelFactory<S,A,T> implements ModelFactory<S,A,T> {
 	
 	private Map<String,Class<? extends Model<S,A,T>>> modelClassesById = new HashMap<String,Class<? extends Model<S,A,T>>>();
 		
-	public void registerModel(Class<? extends Model<S,A,T>> modelClass, String modelId)
+	public <M extends Model<S,A,T>> void registerModel(Class<M> modelClass, String modelId)
 	{
 		modelClassesById.put(modelId, modelClass);
 	}
