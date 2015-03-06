@@ -50,11 +50,13 @@ public class StatefulDroneStateWithoutActionsModelAdapter implements Model<Drone
 	private List<DroneAction> takenActions;
 	private int iteration = 0;
 	private DroneState previousDroneState;
+	private int modelRecentActionCount;
 		
-	public StatefulDroneStateWithoutActionsModelAdapter(DroneModel droneModel)
+	public StatefulDroneStateWithoutActionsModelAdapter(DroneModel droneModel,int modelRecentActionCount)
 	{
 		this.droneModel = droneModel;
 		this.takenActions = new ArrayList<DroneAction>();
+		this.modelRecentActionCount = modelRecentActionCount;
 	}
 	
 	@Override
@@ -66,8 +68,8 @@ public class StatefulDroneStateWithoutActionsModelAdapter implements Model<Drone
 	private <A extends NumericAction> List<A> getRecentActions(ActionExtractor<A> extractor)
 	{
 		List<DroneAction> recentActions = new ArrayList<DroneAction>();
-		int actionTakenCount = Math.min(iteration,PositionVelocityWithRecentActions.RECENT_ACTION_COUNT);
-		int notTakenActionCount = PositionVelocityWithRecentActions.RECENT_ACTION_COUNT - actionTakenCount;
+		int actionTakenCount = Math.min(iteration,modelRecentActionCount);
+		int notTakenActionCount = modelRecentActionCount - actionTakenCount;
 		int iterationStart = iteration - actionTakenCount;
 		for (int i = 0; i < notTakenActionCount; i++)
 		{
