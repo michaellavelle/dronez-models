@@ -22,13 +22,12 @@ import org.ml4j.dronez.ForwardBackAction;
 import org.ml4j.dronez.LeftRightAction;
 import org.ml4j.dronez.NumericAction;
 import org.ml4j.dronez.PositionVelocityWithRecentActions;
-import org.ml4j.dronez.SpinAction;
 import org.ml4j.dronez.UpDownAction;
 import org.ml4j.dronez.histories.ForwardBackStateActionSequenceHistory;
 import org.ml4j.dronez.histories.LeftRightStateActionSequenceHistory;
-import org.ml4j.dronez.histories.SpinStateActionSequenceHistory;
 import org.ml4j.dronez.histories.UpDownStateActionSequenceHistory;
 import org.ml4j.dronez.models.DroneModel;
+import org.ml4j.dronez.models.DummySpinModel;
 import org.ml4j.mdp.Model;
 import org.ml4j.mdp.StateActionSequenceHistory;
 
@@ -66,11 +65,11 @@ public class DroneModelLearner implements ModelLearner<DroneStateWithRecentActio
 		Model<PositionVelocityWithRecentActions<ForwardBackAction>,PositionVelocityWithRecentActions<ForwardBackAction>,ForwardBackAction> forwardBackModel 
 		= createSingleDimensionDroneModelLearner(ForwardBackAction.class,0,4,-0.5,0.5).learnModel(new ForwardBackStateActionSequenceHistory(stateActionStateHistory));
 
-		Model<PositionVelocityWithRecentActions<SpinAction>,PositionVelocityWithRecentActions<SpinAction>,SpinAction> spinModel 
-		= createSingleDimensionDroneModelLearner(SpinAction.class,0,2 * Math.PI,-0.5,0.5).learnModel(new SpinStateActionSequenceHistory(stateActionStateHistory));
+		//Model<PositionVelocityWithRecentActions<SpinAction>,PositionVelocityWithRecentActions<SpinAction>,SpinAction> spinModel 
+		//= createSingleDimensionDroneModelLearner(SpinAction.class,0,2 * Math.PI,-0.5,0.5).learnModel(new SpinStateActionSequenceHistory(stateActionStateHistory));
 
 		
-		return new DroneModel(leftRightModel,upDownModel,forwardBackModel,spinModel);
+		return new DroneModel(leftRightModel,upDownModel,forwardBackModel,new DummySpinModel());
 	}
 
 }
