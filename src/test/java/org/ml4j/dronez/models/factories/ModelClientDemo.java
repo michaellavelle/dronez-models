@@ -40,7 +40,7 @@ import org.ml4j.mdp.StateActionSequenceHistory;
  */
 public class ModelClientDemo {
 	
-	private static String modelId = "droneModel_12032015_3";
+	private static String modelId = "droneModel_12032015_4";
 
 	public static void main(String[] args)
 	{
@@ -55,7 +55,7 @@ public class ModelClientDemo {
 		
 		
 		// Load a state action history that we can use to evaluate the Model
-		StateActionSequenceHistory<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> history = StateActionSequenceHistoryConvertingLoader.getStateActionSequenceHistory("flight_11032015_2",modelRecentActionCount);
+		StateActionSequenceHistory<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> history = StateActionSequenceHistoryConvertingLoader.getStateActionSequenceHistory("flight_11032015_2_swapped",modelRecentActionCount);
 
 		// Replay the history ( 150ms between actions), and display the Model-generated trajectory along with the actual trajectory
 		DroneStateActionSequenceDisplayer<DroneStateWithRecentActions,DroneAction> displayer = new DroneStateActionSequenceDisplayer<DroneStateWithRecentActions,DroneAction>();
