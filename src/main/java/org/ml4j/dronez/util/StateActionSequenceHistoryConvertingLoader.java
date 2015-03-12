@@ -44,8 +44,10 @@ import org.ml4j.util.SerializationHelper;
  */
 public class StateActionSequenceHistoryConvertingLoader {
 
+	
+	
 	public static StateActionSequenceHistory<DroneStateWithRecentActions, DroneStateWithRecentActions, DroneAction> getStateActionSequenceHistory(
-			String historyId) {
+			String historyId,int recentActionCount) {
 		// Load StateActionSequenceHistory<DroneState,DroneState,DroneAction>
 
 		// Convert to a history with recent actions encapsulated as part of the state
@@ -62,57 +64,57 @@ public class StateActionSequenceHistoryConvertingLoader {
 		int iteration = 0;
 		for (LabeledData<StateAction<DroneState, DroneAction>, DroneState> data : history1
 				.getLabeledDataSet()) {
-			if (iteration >= PositionVelocityWithRecentActions.RECENT_ACTION_COUNT) {
+			if (iteration >= recentActionCount) {
 				PositionVelocityWithRecentActions<LeftRightAction> lr1 = new PositionVelocityWithRecentActions<LeftRightAction>(
 						data.getData().getState()
 								.getLeftRightPositionVelocity().getPosition(),
 						data.getData().getState()
 								.getLeftRightPositionVelocity().getVelocity(),
 						getRecentActions(history1, iteration,
-								new LeftRightActionExtractor()));
+								new LeftRightActionExtractor(),recentActionCount));
 				PositionVelocityWithRecentActions<UpDownAction> ud1 = new PositionVelocityWithRecentActions<UpDownAction>(
 						data.getData().getState().getUpDownPositionVelocity()
 								.getPosition(), data.getData().getState()
 								.getUpDownPositionVelocity().getPosition(),
 						getRecentActions(history1, iteration,
-								new UpDownActionExtractor()));
+								new UpDownActionExtractor(),recentActionCount));
 				PositionVelocityWithRecentActions<ForwardBackAction> fb1 = new PositionVelocityWithRecentActions<ForwardBackAction>(
 						data.getData().getState()
 								.getForwardBackPositionVelocity().getPosition(),
 						data.getData().getState()
 								.getForwardBackPositionVelocity().getPosition(),
 						getRecentActions(history1, iteration,
-								new ForwardBackActionExtractor()));
+								new ForwardBackActionExtractor(),recentActionCount));
 				PositionVelocityWithRecentActions<SpinAction> sp1 = new PositionVelocityWithRecentActions<SpinAction>(
 						data.getData().getState().getSpinPositionVelocity()
 								.getPosition(), data.getData().getState()
 								.getSpinPositionVelocity().getPosition(),
 						getRecentActions(history1, iteration,
-								new SpinActionExtractor()));
+								new SpinActionExtractor(),recentActionCount));
 
 				PositionVelocityWithRecentActions<LeftRightAction> lr2 = new PositionVelocityWithRecentActions<LeftRightAction>(
 						data.getLabel().getLeftRightPositionVelocity()
 								.getPosition(), data.getLabel()
 								.getLeftRightPositionVelocity().getVelocity(),
 						getRecentActions(history1, iteration,
-								new LeftRightActionExtractor()));
+								new LeftRightActionExtractor(),recentActionCount));
 				PositionVelocityWithRecentActions<UpDownAction> ud2 = new PositionVelocityWithRecentActions<UpDownAction>(
 						data.getLabel().getUpDownPositionVelocity()
 								.getPosition(), data.getLabel()
 								.getUpDownPositionVelocity().getPosition(),
 						getRecentActions(history1, iteration,
-								new UpDownActionExtractor()));
+								new UpDownActionExtractor(),recentActionCount));
 				PositionVelocityWithRecentActions<ForwardBackAction> fb2 = new PositionVelocityWithRecentActions<ForwardBackAction>(
 						data.getLabel().getForwardBackPositionVelocity()
 								.getPosition(),
 						data.getLabel().getForwardBackPositionVelocity()
 								.getPosition(), getRecentActions(history1,
-								iteration, new ForwardBackActionExtractor()));
+								iteration, new ForwardBackActionExtractor(),recentActionCount));
 				PositionVelocityWithRecentActions<SpinAction> sp2 = new PositionVelocityWithRecentActions<SpinAction>(
 						data.getLabel().getSpinPositionVelocity().getPosition(),
 						data.getLabel().getSpinPositionVelocity().getPosition(),
 						getRecentActions(history1, iteration,
-								new SpinActionExtractor()));
+								new SpinActionExtractor(),recentActionCount));
 
 				DroneStateWithRecentActions initial = new DroneStateWithRecentActions(
 						lr1, ud1, fb1, sp1);
@@ -120,7 +122,7 @@ public class StateActionSequenceHistoryConvertingLoader {
 						lr2, ud2, fb2, sp2);
 				history.onStateActionStateSequence(
 						iteration
-								- PositionVelocityWithRecentActions.RECENT_ACTION_COUNT,
+								- recentActionCount,
 						initial, data.getData().getAction(), end);
 			}
 			iteration++;
@@ -132,11 +134,11 @@ public class StateActionSequenceHistoryConvertingLoader {
 
 	private static <A> List<A> getRecentActions(
 			StateActionSequenceHistory<DroneState, DroneState, DroneAction> history,
-			int currentIteration, ActionExtractor<A> actionExtractor) {
+			int currentIteration, ActionExtractor<A> actionExtractor,int recentActionCount) {
 
 		List<DroneAction> actions = new ArrayList<DroneAction>();
 		for (int iteration = currentIteration
-				- PositionVelocityWithRecentActions.RECENT_ACTION_COUNT; iteration <= currentIteration; iteration++) {
+				- recentActionCount; iteration <= currentIteration; iteration++) {
 			LabeledData<StateAction<DroneState, DroneAction>, DroneState> data = history
 					.getStateActionStateSequence(iteration);
 			actions.add(data.getData().getAction());

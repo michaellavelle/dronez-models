@@ -40,7 +40,7 @@ import org.ml4j.mdp.StateActionSequenceHistory;
  */
 public class ModelClientDemo {
 	
-	private static String modelId = "droneModel_11032015_1";
+	private static String modelId = "droneModel_12032015_3";
 
 	public static void main(String[] args)
 	{
@@ -51,19 +51,22 @@ public class ModelClientDemo {
 		// Create Model by id
 		Model<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> model = droneModelFactory.createModel(modelId);
 		
+		int modelRecentActionCount = PositionVelocityWithRecentActions.DEFAULT_RECENT_ACTION_COUNT;
+		
+		
 		// Load a state action history that we can use to evaluate the Model
-		StateActionSequenceHistory<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> history = StateActionSequenceHistoryConvertingLoader.getStateActionSequenceHistory("flight_11032015_2");
+		StateActionSequenceHistory<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> history = StateActionSequenceHistoryConvertingLoader.getStateActionSequenceHistory("flight_11032015_2",modelRecentActionCount);
 
 		// Replay the history ( 150ms between actions), and display the Model-generated trajectory along with the actual trajectory
 		DroneStateActionSequenceDisplayer<DroneStateWithRecentActions,DroneAction> displayer = new DroneStateActionSequenceDisplayer<DroneStateWithRecentActions,DroneAction>();
-		displayer.setTargetTrajectory(new ModelGeneratedDroneStateTrajectory(model,getInitialState(history),getHistoricalActions(history)),true);
+		displayer.setTargetTrajectory(new ModelGeneratedDroneStateTrajectory(model,getInitialState(history,modelRecentActionCount),getHistoricalActions(history),modelRecentActionCount),true);
 		history.replay(displayer, 150);
 		
 	}
 	
-	private static DroneState getInitialState(StateActionSequenceHistory<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> history)
+	private static DroneState getInitialState(StateActionSequenceHistory<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> history,int recentActionCount)
 	{
-		DroneStateWithRecentActions s =  history.getStateActionStateSequence(PositionVelocityWithRecentActions.RECENT_ACTION_COUNT).getData().getState();
+		DroneStateWithRecentActions s =  history.getStateActionStateSequence(recentActionCount).getData().getState();
 		return new DroneState(s.getLeftRightPositionVelocity(),s.getUpDownPositionVelocity(),s.getForwardBackPositionVelocity(),s.getSpinPositionVelocity());
 	}
 	

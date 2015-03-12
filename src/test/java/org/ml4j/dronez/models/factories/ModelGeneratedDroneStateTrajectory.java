@@ -47,24 +47,26 @@ public class ModelGeneratedDroneStateTrajectory implements Trajectory<DroneState
 	private DroneState initialDroneState;
 	private DroneStateWithRecentActions currentState;
 	private List<DroneAction> actions;
+	private int recentActionCount;
 	
-	public ModelGeneratedDroneStateTrajectory(Model<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> model,DroneState initialState,List<DroneAction> actions)
+	public ModelGeneratedDroneStateTrajectory(Model<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> model,DroneState initialState,List<DroneAction> actions,int recentActionCount)
 	{
 		this.model = model;
 		this.initialDroneState = initialState;
 		this.actions = actions;
+		this.recentActionCount = recentActionCount;
 	}
 	
 	@Override
 	public DroneState getTarget(long iteration) {
 		
-		if (iteration < PositionVelocityWithRecentActions.RECENT_ACTION_COUNT)
+		if (iteration < recentActionCount)
 		{
 			return initialDroneState;
 		}
 		
 		
-		if (iteration == PositionVelocityWithRecentActions.RECENT_ACTION_COUNT)
+		if (iteration == recentActionCount)
 		{
 			PositionVelocityWithRecentActions<LeftRightAction> lr = new PositionVelocityWithRecentActions<LeftRightAction>(initialDroneState.getLeftRightPositionVelocity().getPosition(),initialDroneState.getLeftRightPositionVelocity().getVelocity(),getRecentActions((int)iteration,new LeftRightActionExtractor()));
 			PositionVelocityWithRecentActions<UpDownAction> ud = new PositionVelocityWithRecentActions<UpDownAction>(initialDroneState.getUpDownPositionVelocity().getPosition(),initialDroneState.getUpDownPositionVelocity().getVelocity(),getRecentActions((int)iteration,new UpDownActionExtractor()));
@@ -85,9 +87,9 @@ public class ModelGeneratedDroneStateTrajectory implements Trajectory<DroneState
 	private <A> List<A> getRecentActions(int iteration,ActionExtractor<A> actionExtractor)
 	{
 		List<DroneAction> recentActions = new ArrayList<DroneAction>();
-		for (int i = 0; i < PositionVelocityWithRecentActions.RECENT_ACTION_COUNT; i++)
+		for (int i = 0; i < recentActionCount; i++)
 		{
-			recentActions.add(actions.get(iteration - PositionVelocityWithRecentActions.RECENT_ACTION_COUNT + i));
+			recentActions.add(actions.get(iteration - recentActionCount + i));
 		}
 		return actionExtractor.getActions(recentActions);
 	}

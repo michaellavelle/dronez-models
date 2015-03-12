@@ -40,14 +40,26 @@ public class SingleDimensionDroneModel<A extends NumericAction> implements Model
 	
 	private Model<VelocityAndRecentActions<A>,PositionDeltaWithVelocity,A> positionDeltaModel;
 
-	public SingleDimensionDroneModel(Model<VelocityAndRecentActions<A>,PositionDeltaWithVelocity,A> positionDeltaModel,double minimumPosition,double maximumPosition,double minimumVelocity,double maximumVelocity,List<A> allActions )
+	private int recentActionCount = PositionVelocityWithRecentActions.DEFAULT_RECENT_ACTION_COUNT;
+	
+	public SingleDimensionDroneModel(Model<VelocityAndRecentActions<A>,PositionDeltaWithVelocity,A> positionDeltaModel,double minimumPosition,double maximumPosition,double minimumVelocity,double maximumVelocity,List<A> allActions,int recentActionCount )
 	{
 		this.minimumPosition = minimumPosition;
 		this.maximumPosition = maximumPosition;
 		this.minimumVelocity = minimumVelocity;
 		this.maximumVelocity = maximumVelocity;
 		this.positionDeltaModel = positionDeltaModel;
+		this.recentActionCount = recentActionCount;
 	}
+	
+	
+	
+	public int getRecentActionCount() {
+		return recentActionCount;
+	}
+
+
+
 	private double minimumPosition;
 	private double maximumPosition;
 	private double minimumVelocity;
@@ -62,7 +74,7 @@ public class SingleDimensionDroneModel<A extends NumericAction> implements Model
 		double velocityRange = maximumVelocity - minimumVelocity;
 		double randomVelocity = Math.random() * velocityRange - minimumVelocity;
 		List<A> randomActions = new ArrayList<A>();
-		for (int i = 0; i < PositionVelocityWithRecentActions.RECENT_ACTION_COUNT;i++)
+		for (int i = 0; i < recentActionCount;i++)
 		{
 			int randomIndex = (int)(Math.random() * allActions.size());
 			randomActions.add(allActions.get(randomIndex));

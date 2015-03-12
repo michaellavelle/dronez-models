@@ -26,10 +26,12 @@ public class SingleDimensionPositionDeltaModelLearner<A extends NumericAction> i
 	private static final double MIN_POSITION_DELTA = -0.5d;
 
 	private List<A> allActions;
+	private int recentActionCount;
 	
-	public SingleDimensionPositionDeltaModelLearner(List<A> allActions)
+	public SingleDimensionPositionDeltaModelLearner(List<A> allActions,int recentActionCount)
 	{
 		this.allActions = allActions;
+		this.recentActionCount = recentActionCount;
 	}
 
 	
@@ -44,7 +46,7 @@ public class SingleDimensionPositionDeltaModelLearner<A extends NumericAction> i
 		LinearRegressionMultiHypothesisFunction learnedDistanceToTargetHyp = modelLearningRegressionAlgorithm
 				.getOptimalHypothesisFunction(
 						stateActionStateHistory
-								.getInitialStateActionHistory(new DroneStateActionLinearRegressionFeaturesMapper<A>()),
+								.getInitialStateActionHistory(new DroneStateActionLinearRegressionFeaturesMapper<A>(recentActionCount)),
 								stateActionStateHistory.getEndStateHistory(new DroneStatePositionVelocityLabelMapper()), context);
 
 		System.out.println("Learned Delta Position/Velocity Hypothesis Function");
@@ -54,8 +56,8 @@ public class SingleDimensionPositionDeltaModelLearner<A extends NumericAction> i
 		// Obtain a deterministic model
 		Model<VelocityAndRecentActions<A>, PositionDeltaWithVelocity, A> linearApproxDistanceToTargetModel = new LinearApproximationDeltaPositionWithVelocityModel<A>(
 				allActions, new DroneStatePositionVelocityLabelMapper(),
-				new DroneStateActionLinearRegressionFeaturesMapper<A>(), learnedDistanceToTargetHyp,
-				MAX_POSITION_DELTA - MIN_POSITION_DELTA, null, null, null, null);
+				new DroneStateActionLinearRegressionFeaturesMapper<A>(recentActionCount), learnedDistanceToTargetHyp,
+				MAX_POSITION_DELTA - MIN_POSITION_DELTA, null, null, null, null, recentActionCount);
 		
 	
 		return linearApproxDistanceToTargetModel;

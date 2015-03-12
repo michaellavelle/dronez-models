@@ -14,10 +14,27 @@ public class DummySpinModel implements Model<PositionVelocityWithRecentActions<S
 	 */
 	private static final long serialVersionUID = 1L;
 
+	
+	private int recentActionCount = PositionVelocityWithRecentActions.DEFAULT_RECENT_ACTION_COUNT;
+	
 	@Override
 	public PositionVelocityWithRecentActions<SpinAction> getInitialState() {
 		return new PositionVelocityWithRecentActions<SpinAction>(0,0,getActions());
 	}
+	
+	
+	public DummySpinModel(int recentActionCount)
+	{
+		this.recentActionCount = recentActionCount;
+	}
+	
+
+	
+
+	public int getRecentActionCount() {
+		return recentActionCount;
+	}
+
 
 	@Override
 	public PositionVelocityWithRecentActions<SpinAction> getState(
@@ -28,7 +45,7 @@ public class DummySpinModel implements Model<PositionVelocityWithRecentActions<S
 	public List<SpinAction> getActions()
 	{
 		List<SpinAction> actions = new ArrayList<SpinAction>();
-		for (int i = 0; i < PositionVelocityWithRecentActions.RECENT_ACTION_COUNT; i++)
+		for (int i = 0; i < recentActionCount; i++)
 		{
 			actions.add(SpinAction.NO_OP);
 		}

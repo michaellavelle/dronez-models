@@ -52,14 +52,16 @@ public class SingleDimensionDroneModelLearner<A extends NumericAction> implement
 	private double minimumVelocity;
 	private double maximumVelocity;
 	private String dimensionName;
+	private int recentActionCount;
 	
-	public SingleDimensionDroneModelLearner(double minimumPosition,double maximumPosition,double minimumVelocity,double maximumVelocity,String dimensionName)
+	public SingleDimensionDroneModelLearner(double minimumPosition,double maximumPosition,double minimumVelocity,double maximumVelocity,String dimensionName,int recentActionCount)
 	{
 		this.minimumPosition = minimumPosition;
 		this.maximumPosition = maximumPosition;
 		this.minimumVelocity = minimumVelocity;
 		this.maximumVelocity = maximumVelocity;
 		this.dimensionName = dimensionName;
+		this.recentActionCount = recentActionCount;
 	}
 	
 	@Override
@@ -76,7 +78,7 @@ public class SingleDimensionDroneModelLearner<A extends NumericAction> implement
 		
 		serializationHelper.serialize(delegatedModel, "droneDeltaPosition" +  dimensionName + "Model");
 		
-		return new SingleDimensionDroneModel<A>(delegatedModel,minimumPosition,maximumPosition,minimumVelocity,maximumVelocity,getAllActions(stateActionStateHistory.getStateActionStateSequence(0).getData().getAction()));
+		return new SingleDimensionDroneModel<A>(delegatedModel,minimumPosition,maximumPosition,minimumVelocity,maximumVelocity,getAllActions(stateActionStateHistory.getStateActionStateSequence(0).getData().getAction()),recentActionCount);
 
 	}
 	
@@ -100,7 +102,7 @@ public class SingleDimensionDroneModelLearner<A extends NumericAction> implement
 	
 	private SingleDimensionPositionDeltaModelLearner<A> createSingleDimensionPositionDeltaModelLearner(A firstAction) {
 		
-		return new SingleDimensionPositionDeltaModelLearner<A>(getAllActions(firstAction));
+		return new SingleDimensionPositionDeltaModelLearner<A>(getAllActions(firstAction),recentActionCount);
 	}
 
 }

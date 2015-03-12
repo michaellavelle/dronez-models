@@ -41,7 +41,21 @@ public class  SingleDimensionDroneDistanceToTargetPositionModel<A extends Numeri
 	
 	private Model<VelocityAndRecentActions<A>,PositionDeltaWithVelocity,A> positionDeltaModel;
 
-	public SingleDimensionDroneDistanceToTargetPositionModel(Model<VelocityAndRecentActions<A>,PositionDeltaWithVelocity,A> positionDeltaModel,double minimumPosition,double maximumPosition,double minimumVelocity,double maximumVelocity,List<A> allActions )
+	// TODO ML - remove this
+	private int recentActionCount = PositionVelocityWithRecentActions.DEFAULT_RECENT_ACTION_COUNT;
+
+	
+	
+	
+	public Model<VelocityAndRecentActions<A>, PositionDeltaWithVelocity, A> getPositionDeltaModel() {
+		return positionDeltaModel;
+	}
+
+	public int getRecentActionCount() {
+		return recentActionCount;
+	}
+
+	public SingleDimensionDroneDistanceToTargetPositionModel(Model<VelocityAndRecentActions<A>,PositionDeltaWithVelocity,A> positionDeltaModel,double minimumPosition,double maximumPosition,double minimumVelocity,double maximumVelocity,List<A> allActions,int recentActionCount )
 	{
 		this.minimumPosition = minimumPosition;
 		this.maximumPosition = maximumPosition;
@@ -49,6 +63,7 @@ public class  SingleDimensionDroneDistanceToTargetPositionModel<A extends Numeri
 		this.maximumVelocity = maximumVelocity;
 		this.positionDeltaModel = positionDeltaModel;
 		this.allActions = allActions;
+		this.recentActionCount = recentActionCount;
 	}
 	private double minimumPosition;
 	private double maximumPosition;
@@ -64,7 +79,7 @@ public class  SingleDimensionDroneDistanceToTargetPositionModel<A extends Numeri
 		double velocityRange = maximumVelocity - minimumVelocity;
 		double randomVelocity = Math.random() * velocityRange - minimumVelocity;
 		List<A> randomActions = new ArrayList<A>();
-		for (int i = 0; i < PositionVelocityWithRecentActions.RECENT_ACTION_COUNT;i++)
+		for (int i = 0; i < recentActionCount;i++)
 		{
 			int randomIndex = (int)(Math.random() * allActions.size());
 			randomActions.add(allActions.get(randomIndex));

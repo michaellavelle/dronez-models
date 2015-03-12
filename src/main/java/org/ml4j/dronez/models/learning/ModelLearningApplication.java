@@ -19,6 +19,7 @@ import java.io.Serializable;
 
 import org.ml4j.dronez.DroneAction;
 import org.ml4j.dronez.DroneStateWithRecentActions;
+import org.ml4j.dronez.PositionVelocityWithRecentActions;
 import org.ml4j.dronez.util.StateActionSequenceHistoryConvertingLoader;
 import org.ml4j.mdp.Model;
 import org.ml4j.mdp.StateActionSequenceHistory;
@@ -49,11 +50,17 @@ public class ModelLearningApplication<S extends Serializable,T extends Serializa
 	
 	public static void main(String[] args)
 	{
+		int recentActionCount = PositionVelocityWithRecentActions.DEFAULT_RECENT_ACTION_COUNT;
+
+		
+		
 		// Load our state action sequence history
-		StateActionSequenceHistory<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> history = StateActionSequenceHistoryConvertingLoader.getStateActionSequenceHistory("allStateActionHistory");
+		StateActionSequenceHistory<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> history = StateActionSequenceHistoryConvertingLoader.getStateActionSequenceHistory("flight_11032015_2",recentActionCount);
 				
+		
+		
 		// Create our model learner.
-		ModelLearner<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> modelLearner = new DroneModelLearner();
+		ModelLearner<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> modelLearner = new DroneModelLearner(recentActionCount);
 		
 		// Create a model learning application
 		ModelLearningApplication<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> modelLearningApplication = new ModelLearningApplication<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction>(modelLearner);
@@ -61,7 +68,7 @@ public class ModelLearningApplication<S extends Serializable,T extends Serializa
 		
 		
 		// Learn model from history, and serialize
-		modelLearningApplication.learnAndSerializeModel("droneModel",history);
+		modelLearningApplication.learnAndSerializeModel("droneModel_12032015_3",history);
 	
 
 	}

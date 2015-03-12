@@ -21,6 +21,7 @@ import java.util.Arrays;
 import org.ml4j.dronez.ForwardBackAction;
 import org.ml4j.dronez.LeftRightAction;
 import org.ml4j.dronez.LinearApproximationDeltaPositionWithVelocityModel;
+import org.ml4j.dronez.PositionVelocityWithRecentActions;
 import org.ml4j.dronez.SpinAction;
 import org.ml4j.dronez.UpDownAction;
 import org.ml4j.dronez.models.SingleDimensionDroneDistanceToTargetPositionModel;
@@ -44,20 +45,21 @@ public class TargetRelativeModelLearningApplication<S extends Serializable,T ext
 		LinearApproximationDeltaPositionWithVelocityModel<ForwardBackAction> forwardBackDeltaModel = serializationHelper.deserialize(LinearApproximationDeltaPositionWithVelocityModel.class, "droneDeltaPositionForwardBackActionModel");
 		LinearApproximationDeltaPositionWithVelocityModel<SpinAction> spinDeltaModel = serializationHelper.deserialize(LinearApproximationDeltaPositionWithVelocityModel.class, "droneDeltaPositionSpinActionModel");
 
+		int recentActionCount = PositionVelocityWithRecentActions.DEFAULT_RECENT_ACTION_COUNT;
+
 		
-		
-		SingleDimensionDroneDistanceToTargetPositionModel<LeftRightAction> distanceToTargetPositionLeftRightModel = new SingleDimensionDroneDistanceToTargetPositionModel<LeftRightAction>(leftRightDeltaModel,-2.5,2.5,-0.5,0.5,Arrays.asList(LeftRightAction.ALL_ACTIONS));
-		SingleDimensionDroneDistanceToTargetPositionModel<UpDownAction> distanceToTargetPositionUpDownModel = new SingleDimensionDroneDistanceToTargetPositionModel<UpDownAction>(upDownDeltaModel,-2.5,2.5,-0.5,0.5,Arrays.asList(UpDownAction.ALL_ACTIONS));
-		SingleDimensionDroneDistanceToTargetPositionModel<ForwardBackAction> distanceToTargetPositionForwardBackModel = new SingleDimensionDroneDistanceToTargetPositionModel<ForwardBackAction>(forwardBackDeltaModel,-2.5,2.5,-0.5,0.5,Arrays.asList(ForwardBackAction.ALL_ACTIONS));
-		SingleDimensionDroneDistanceToTargetPositionModel<SpinAction> distanceToTargetPositionSpinModel = new SingleDimensionDroneDistanceToTargetPositionModel<SpinAction>(spinDeltaModel,-2.5,2.5,-0.5,0.5,Arrays.asList(SpinAction.ALL_ACTIONS));
+		SingleDimensionDroneDistanceToTargetPositionModel<LeftRightAction> distanceToTargetPositionLeftRightModel = new SingleDimensionDroneDistanceToTargetPositionModel<LeftRightAction>(leftRightDeltaModel,-2.5,2.5,-0.5,0.5,Arrays.asList(LeftRightAction.ALL_ACTIONS),recentActionCount);
+		SingleDimensionDroneDistanceToTargetPositionModel<UpDownAction> distanceToTargetPositionUpDownModel = new SingleDimensionDroneDistanceToTargetPositionModel<UpDownAction>(upDownDeltaModel,-2.5,2.5,-0.5,0.5,Arrays.asList(UpDownAction.ALL_ACTIONS),recentActionCount);
+		SingleDimensionDroneDistanceToTargetPositionModel<ForwardBackAction> distanceToTargetPositionForwardBackModel = new SingleDimensionDroneDistanceToTargetPositionModel<ForwardBackAction>(forwardBackDeltaModel,-2.5,2.5,-0.5,0.5,Arrays.asList(ForwardBackAction.ALL_ACTIONS),recentActionCount);
+		SingleDimensionDroneDistanceToTargetPositionModel<SpinAction> distanceToTargetPositionSpinModel = new SingleDimensionDroneDistanceToTargetPositionModel<SpinAction>(spinDeltaModel,-2.5,2.5,-0.5,0.5,Arrays.asList(SpinAction.ALL_ACTIONS),recentActionCount);
 
 		
 		
 		// Learn model from history, and serialize
-		serializationHelper.serialize(distanceToTargetPositionLeftRightModel, "distanceToTargetPositionLeftRightModel");
-		serializationHelper.serialize(distanceToTargetPositionUpDownModel, "distanceToTargetPositionUpDownModel");
-		serializationHelper.serialize(distanceToTargetPositionForwardBackModel, "distanceToTargetPositionForwardBackModel");
-		serializationHelper.serialize(distanceToTargetPositionSpinModel, "distanceToTargetPositionSpinModel");
+		serializationHelper.serialize(distanceToTargetPositionLeftRightModel, "distanceToTargetPositionLeftRightModel_12032015_3");
+		serializationHelper.serialize(distanceToTargetPositionUpDownModel, "distanceToTargetPositionUpDownModel_12032015_3");
+		serializationHelper.serialize(distanceToTargetPositionForwardBackModel, "distanceToTargetPositionForwardBackModel_12032015_3");
+		serializationHelper.serialize(distanceToTargetPositionSpinModel, "distanceToTargetPositionSpinModel_12032015_3");
 
 	}
 	

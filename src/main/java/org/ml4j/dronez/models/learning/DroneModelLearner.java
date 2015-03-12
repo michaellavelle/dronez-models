@@ -45,9 +45,15 @@ public class DroneModelLearner implements ModelLearner<DroneStateWithRecentActio
 	
 	private <A extends NumericAction> SingleDimensionDroneModelLearner<A> createSingleDimensionDroneModelLearner(Class<A> clazz,double minimumPosition,double maximumPosition,double minimumVelocity,double maximumVelocity)
 	{
-		return new SingleDimensionDroneModelLearner<A>(minimumPosition,maximumPosition,minimumVelocity,maximumVelocity,clazz.getSimpleName());
+		return new SingleDimensionDroneModelLearner<A>(minimumPosition,maximumPosition,minimumVelocity,maximumVelocity,clazz.getSimpleName(),recentActionCount);
 	}
 
+	private int recentActionCount;
+	
+	public DroneModelLearner(int recentActionCount)
+	{
+		this.recentActionCount = recentActionCount;
+	}
 	
 	@Override
 	public Model<DroneStateWithRecentActions, DroneStateWithRecentActions, DroneAction> learnModel(
@@ -69,7 +75,7 @@ public class DroneModelLearner implements ModelLearner<DroneStateWithRecentActio
 		//= createSingleDimensionDroneModelLearner(SpinAction.class,0,2 * Math.PI,-0.5,0.5).learnModel(new SpinStateActionSequenceHistory(stateActionStateHistory));
 
 		
-		return new DroneModel(leftRightModel,upDownModel,forwardBackModel,new DummySpinModel());
+		return new DroneModel(leftRightModel,upDownModel,forwardBackModel,new DummySpinModel(recentActionCount));
 	}
 
 }
