@@ -8,7 +8,7 @@ which can be imported into other Dronez projects, eg.
 
 1)  To help create mock Drone implementations, allowing us to obtain predicted next ``DroneStateWithRecentAction``s from current ``DroneStateWithRecentAction``s after a DroneAction is executed.
 
-2)  To allow us to apply Continuous-State Markov Decision Processes to learn optimal policies for maximising state-dependent reward.
+2)  To allow us to apply Continuous-State Markov Decision Processes to [learn optimal policies for maximising state-dependent reward](https://github.com/ml4j/dronez-policies).
 
 The project contains a standalone ModelLearningApplication which uses yet-to-be-written-implementations of
 
