@@ -64,7 +64,9 @@ public class StateActionSequenceHistoryConvertingLoader {
 		int iteration = 0;
 		for (LabeledData<StateAction<DroneState, DroneAction>, DroneState> data : history1
 				.getLabeledDataSet()) {
-			if (iteration >= recentActionCount) {
+			if (iteration >= recentActionCount + 50) {
+				//System.out.println(data.getData().getState().getLeftRightPositionVelocity().getPosition() + "," + data.getData().getState().getLeftRightPositionVelocity().getVelocity())
+				System.out.println(data.getData().getAction().getLeftRightAction().getValue() + "," + data.getData().getState().getLeftRightPositionVelocity().getVelocity());
 				PositionVelocityWithRecentActions<LeftRightAction> lr1 = new PositionVelocityWithRecentActions<LeftRightAction>(
 						data.getData().getState()
 								.getLeftRightPositionVelocity().getPosition(),

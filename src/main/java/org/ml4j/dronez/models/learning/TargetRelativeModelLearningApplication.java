@@ -45,8 +45,8 @@ public class TargetRelativeModelLearningApplication<S extends Serializable,T ext
 		LinearApproximationDeltaPositionWithVelocityModel<ForwardBackAction> forwardBackDeltaModel = serializationHelper.deserialize(LinearApproximationDeltaPositionWithVelocityModel.class, "droneDeltaPositionForwardBackActionModel");
 		LinearApproximationDeltaPositionWithVelocityModel<SpinAction> spinDeltaModel = serializationHelper.deserialize(LinearApproximationDeltaPositionWithVelocityModel.class, "droneDeltaPositionSpinActionModel");
 
-		int recentActionCount = PositionVelocityWithRecentActions.DEFAULT_RECENT_ACTION_COUNT;
-
+		//int recentActionCount = PositionVelocityWithRecentActions.DEFAULT_RECENT_ACTION_COUNT;
+		int recentActionCount = 10;
 		
 		SingleDimensionDroneDistanceToTargetPositionModel<LeftRightAction> distanceToTargetPositionLeftRightModel = new SingleDimensionDroneDistanceToTargetPositionModel<LeftRightAction>(leftRightDeltaModel,-2.5,2.5,-0.5,0.5,Arrays.asList(LeftRightAction.ALL_ACTIONS),recentActionCount);
 		SingleDimensionDroneDistanceToTargetPositionModel<UpDownAction> distanceToTargetPositionUpDownModel = new SingleDimensionDroneDistanceToTargetPositionModel<UpDownAction>(upDownDeltaModel,-2.5,2.5,-0.5,0.5,Arrays.asList(UpDownAction.ALL_ACTIONS),recentActionCount);
@@ -56,10 +56,10 @@ public class TargetRelativeModelLearningApplication<S extends Serializable,T ext
 		
 		
 		// Learn model from history, and serialize
-		serializationHelper.serialize(distanceToTargetPositionLeftRightModel, "distanceToTargetPositionLeftRightModel_12032015_4");
-		serializationHelper.serialize(distanceToTargetPositionUpDownModel, "distanceToTargetPositionUpDownModel_12032015_4");
-		serializationHelper.serialize(distanceToTargetPositionForwardBackModel, "distanceToTargetPositionForwardBackModel_12032015_4");
-		serializationHelper.serialize(distanceToTargetPositionSpinModel, "distanceToTargetPositionSpinModel_12032015_4");
+		serializationHelper.serialize(distanceToTargetPositionLeftRightModel, "distanceToTargetPositionLeftRightModel_16032015_1");
+		serializationHelper.serialize(distanceToTargetPositionUpDownModel, "distanceToTargetPositionUpDownModel_16032015_1");
+		serializationHelper.serialize(distanceToTargetPositionForwardBackModel, "distanceToTargetPositionForwardBackModel_16032015_1");
+		serializationHelper.serialize(distanceToTargetPositionSpinModel, "distanceToTargetPositionSpinModel_16032015_1");
 
 	}
 	

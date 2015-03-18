@@ -50,8 +50,8 @@ public class ModelLearningApplication<S extends Serializable,T extends Serializa
 	
 	public static void main(String[] args)
 	{
-		int recentActionCount = PositionVelocityWithRecentActions.DEFAULT_RECENT_ACTION_COUNT;
-
+		//int recentActionCount = PositionVelocityWithRecentActions.DEFAULT_RECENT_ACTION_COUNT;
+		int recentActionCount = 10;
 		
 		
 		// Load our state action sequence history
@@ -68,7 +68,7 @@ public class ModelLearningApplication<S extends Serializable,T extends Serializa
 		
 		
 		// Learn model from history, and serialize
-		modelLearningApplication.learnAndSerializeModel("droneModel_12032015_4",history);
+		modelLearningApplication.learnAndSerializeModel("droneModel_16032015_1",history);
 	
 
 	}

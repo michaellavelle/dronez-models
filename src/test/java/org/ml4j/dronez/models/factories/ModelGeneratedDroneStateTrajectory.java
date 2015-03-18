@@ -72,7 +72,7 @@ public class ModelGeneratedDroneStateTrajectory implements Trajectory<DroneState
 			PositionVelocityWithRecentActions<UpDownAction> ud = new PositionVelocityWithRecentActions<UpDownAction>(initialDroneState.getUpDownPositionVelocity().getPosition(),initialDroneState.getUpDownPositionVelocity().getVelocity(),getRecentActions((int)iteration,new UpDownActionExtractor()));
 			PositionVelocityWithRecentActions<ForwardBackAction> fb = new PositionVelocityWithRecentActions<ForwardBackAction>(initialDroneState.getForwardBackPositionVelocity().getPosition(),initialDroneState.getForwardBackPositionVelocity().getVelocity(),getRecentActions((int)iteration,new ForwardBackActionExtractor()));
 			PositionVelocityWithRecentActions<SpinAction> s = new PositionVelocityWithRecentActions<SpinAction>(initialDroneState.getSpinPositionVelocity().getPosition(),initialDroneState.getSpinPositionVelocity().getVelocity(),getRecentActions((int)iteration,new SpinActionExtractor()));
-
+		
 			
 			currentState = new DroneStateWithRecentActions(lr,ud,fb,s);
 		}

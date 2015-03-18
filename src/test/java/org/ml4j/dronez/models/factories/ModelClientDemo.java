@@ -22,7 +22,6 @@ import org.ml4j.dronez.DroneAction;
 import org.ml4j.dronez.DroneState;
 import org.ml4j.dronez.DroneStateActionSequenceDisplayer;
 import org.ml4j.dronez.DroneStateWithRecentActions;
-import org.ml4j.dronez.PositionVelocityWithRecentActions;
 import org.ml4j.dronez.models.learning.DroneModelLearner;
 import org.ml4j.dronez.util.StateActionSequenceHistoryConvertingLoader;
 import org.ml4j.mapping.LabeledData;
@@ -40,7 +39,7 @@ import org.ml4j.mdp.StateActionSequenceHistory;
  */
 public class ModelClientDemo {
 	
-	private static String modelId = "droneModel_12032015_4";
+	private static String modelId = "droneModel_16032015_1";
 
 	public static void main(String[] args)
 	{
@@ -51,8 +50,10 @@ public class ModelClientDemo {
 		// Create Model by id
 		Model<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> model = droneModelFactory.createModel(modelId);
 		
-		int modelRecentActionCount = PositionVelocityWithRecentActions.DEFAULT_RECENT_ACTION_COUNT;
 		
+		
+		//int modelRecentActionCount = PositionVelocityWithRecentActions.DEFAULT_RECENT_ACTION_COUNT;
+		int modelRecentActionCount = 10;
 		
 		// Load a state action history that we can use to evaluate the Model
 		StateActionSequenceHistory<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> history = StateActionSequenceHistoryConvertingLoader.getStateActionSequenceHistory("flight_11032015_2_swapped",modelRecentActionCount);
