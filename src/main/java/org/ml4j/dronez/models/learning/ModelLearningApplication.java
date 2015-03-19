@@ -60,7 +60,7 @@ public class ModelLearningApplication<S extends Serializable,T extends Serializa
 	
 		// Consider only the first five recent actions, and ignore latest action
 		boolean[] recentActionsAndLatestActionMask 
-		 = new boolean[]{true,true,true,true,true,false,false,false,false,false,false };
+		 = new boolean[]{true,false,false,false,false,false,false,false,false,false,false };
 		
 		
 		// Create our model learner.
@@ -72,7 +72,7 @@ public class ModelLearningApplication<S extends Serializable,T extends Serializa
 		
 		
 		// Learn model from history, and serialize
-		modelLearningApplication.learnAndSerializeModel("droneModel_19032015_6",history);
+		modelLearningApplication.learnAndSerializeModel("droneModel_19032015_7",history);
 	
 
 	}

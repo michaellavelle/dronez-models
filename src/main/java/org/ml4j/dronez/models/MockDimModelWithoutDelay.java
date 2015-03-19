@@ -23,11 +23,27 @@ public class MockDimModelWithoutDelay<A extends NumericAction> implements Model<
 
 	private Model<TargetRelativePositionWithVelocityAndRecentActions<A>, TargetRelativePositionWithVelocityAndRecentActions<A>, A> model;
 	private A noOpAction;
+	private Integer delayToRemoveInIterations;
 	
-	public MockDimModelWithoutDelay(Model<TargetRelativePositionWithVelocityAndRecentActions<A>, TargetRelativePositionWithVelocityAndRecentActions<A>, A> model,A noOpAction)
+	public MockDimModelWithoutDelay(Model<TargetRelativePositionWithVelocityAndRecentActions<A>, TargetRelativePositionWithVelocityAndRecentActions<A>, A> model,A noOpAction,int delayToRemoveInIterations)
 	{
 		this.model = model;
 		this.noOpAction = noOpAction;
+		this.delayToRemoveInIterations = delayToRemoveInIterations;
+		if (delayToRemoveInIterations == 0 )
+		{
+			throw new IllegalArgumentException("Delay to remove must be greater than zero");
+		}
+	}
+	
+	
+	public int getDelayToRemoveInIterations()
+	{
+		if (delayToRemoveInIterations == null)
+		{
+			delayToRemoveInIterations = 5;
+		}
+		return delayToRemoveInIterations;
 	}
 	
 	private List<A> fillOut10Actions(List<A> actions,A action)
@@ -35,7 +51,7 @@ public class MockDimModelWithoutDelay<A extends NumericAction> implements Model<
 		List<A> newActions = new ArrayList<A>();
 		newActions.addAll(actions);
 		newActions.add(action);
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < getDelayToRemoveInIterations() - 1; i++)
 		{
 			newActions.add(noOpAction);
 		}
