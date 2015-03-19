@@ -55,7 +55,7 @@ public class ModelLearningApplication<S extends Serializable,T extends Serializa
 		
 		
 		// Load our state action sequence history
-		StateActionSequenceHistory<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> history = StateActionSequenceHistoryConvertingLoader.getStateActionSequenceHistory("flight_11032015_2_swapped",recentActionCount);
+		StateActionSequenceHistory<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> history = StateActionSequenceHistoryConvertingLoader.getStateActionSequenceHistory("flight_1426758511349",recentActionCount);
 				
 	
 		// Consider only the first five recent actions, and ignore latest action
@@ -72,7 +72,7 @@ public class ModelLearningApplication<S extends Serializable,T extends Serializa
 		
 		
 		// Learn model from history, and serialize
-		modelLearningApplication.learnAndSerializeModel("droneModel_19032015_1",history);
+		modelLearningApplication.learnAndSerializeModel("droneModel_19032015_2",history);
 	
 
 	}

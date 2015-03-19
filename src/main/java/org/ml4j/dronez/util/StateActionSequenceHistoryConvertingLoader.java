@@ -44,22 +44,8 @@ import org.ml4j.util.SerializationHelper;
  */
 public class StateActionSequenceHistoryConvertingLoader {
 
-	
-	
-	public static StateActionSequenceHistory<DroneStateWithRecentActions, DroneStateWithRecentActions, DroneAction> getStateActionSequenceHistory(
-			String historyId,int recentActionCount) {
-		// Load StateActionSequenceHistory<DroneState,DroneState,DroneAction>
-
-		// Convert to a history with recent actions encapsulated as part of the state
-
-		SerializationHelper serializationHelper = new SerializationHelper(
-				StateActionSequenceHistoryConvertingLoader.class.getClassLoader(),
-				"org/ml4j/dronez/histories");
-
-		@SuppressWarnings("unchecked")
-		StateActionSequenceHistory<DroneState, DroneState, DroneAction> history1 = serializationHelper
-				.deserialize(StateActionSequenceHistory.class, historyId);
-
+	public static  StateActionSequenceHistory<DroneStateWithRecentActions, DroneStateWithRecentActions, DroneAction> convert(StateActionSequenceHistory<DroneState, DroneState, DroneAction> history1,int recentActionCount)
+	{
 		StateActionSequenceHistory<DroneStateWithRecentActions, DroneStateWithRecentActions, DroneAction> history = new StateActionSequenceHistory<DroneStateWithRecentActions, DroneStateWithRecentActions, DroneAction>();
 		int iteration = 0;
 		for (LabeledData<StateAction<DroneState, DroneAction>, DroneState> data : history1
@@ -132,6 +118,25 @@ public class StateActionSequenceHistoryConvertingLoader {
 		}
 
 		return history;
+	}
+	
+	
+	public static StateActionSequenceHistory<DroneStateWithRecentActions, DroneStateWithRecentActions, DroneAction> getStateActionSequenceHistory(
+			String historyId,int recentActionCount) {
+		// Load StateActionSequenceHistory<DroneState,DroneState,DroneAction>
+
+		// Convert to a history with recent actions encapsulated as part of the state
+
+		SerializationHelper serializationHelper = new SerializationHelper(
+				StateActionSequenceHistoryConvertingLoader.class.getClassLoader(),
+				"org/ml4j/dronez/histories");
+
+		@SuppressWarnings("unchecked")
+		StateActionSequenceHistory<DroneState, DroneState, DroneAction> history1 = serializationHelper
+				.deserialize(StateActionSequenceHistory.class, historyId);
+
+	
+		return convert(history1,recentActionCount);
 	}
 
 	private static <A> List<A> getRecentActions(
