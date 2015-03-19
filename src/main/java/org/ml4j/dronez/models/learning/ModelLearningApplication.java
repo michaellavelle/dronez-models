@@ -72,7 +72,7 @@ public class ModelLearningApplication<S extends Serializable,T extends Serializa
 		
 		
 		// Learn model from history, and serialize
-		modelLearningApplication.learnAndSerializeModel("droneModel_19032015_2",history);
+		modelLearningApplication.learnAndSerializeModel("droneModel_19032015_3",history);
 	
 
 	}
