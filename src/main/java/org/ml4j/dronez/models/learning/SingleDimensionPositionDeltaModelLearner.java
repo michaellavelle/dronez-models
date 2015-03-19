@@ -65,7 +65,7 @@ public class SingleDimensionPositionDeltaModelLearner<A extends NumericAction> i
 		// Obtain a deterministic model
 		Model<VelocityAndRecentActions<A>, PositionDeltaWithVelocity, A> linearApproxDistanceToTargetModel = new LinearApproximationDeltaPositionWithVelocityModel<A>(
 				allActions, new DroneStatePositionVelocityLabelMapper(),
-				new DroneStateActionLinearRegressionFeaturesMapper2<A>(recentActionCount), learnedDistanceToTargetHyp,
+				new DroneStateActionLinearRegressionFeaturesMapper<A>(recentActionCount,recentActionsAndLatestActionMask), learnedDistanceToTargetHyp,
 				MAX_POSITION_DELTA - MIN_POSITION_DELTA, null, null, null, null, recentActionCount);
 		
 	
