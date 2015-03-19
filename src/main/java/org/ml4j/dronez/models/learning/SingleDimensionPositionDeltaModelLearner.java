@@ -28,25 +28,34 @@ public class SingleDimensionPositionDeltaModelLearner<A extends NumericAction> i
 	private List<A> allActions;
 	private int recentActionCount;
 	
+	
+	private boolean[] recentActionsAndLatestActionMask;
+	
 	public SingleDimensionPositionDeltaModelLearner(List<A> allActions,int recentActionCount)
 	{
 		this.allActions = allActions;
 		this.recentActionCount = recentActionCount;
 	}
 
+	public SingleDimensionPositionDeltaModelLearner(List<A> allActions,int recentActionCount,boolean[] recentActionsAndLatestActionMask)
+	{
+		this.allActions = allActions;
+		this.recentActionCount = recentActionCount;
+		this.recentActionsAndLatestActionMask = recentActionsAndLatestActionMask;
+	}
 	
 	@Override
 	public Model<VelocityAndRecentActions<A>, PositionDeltaWithVelocity, A> learnModel(
 			StateActionSequenceHistory<VelocityAndRecentActions<A>, PositionDeltaWithVelocity, A> stateActionStateHistory) {
 		
 		// Use Linear Regression to predict next position and velocity from current velocity, recent actions, and the latest action.
-		
+	
 		RegularizationContext context = new SimpleRegularizationContext(10);
 		LinearRegressionMultiAlgorithm<RegularizationContext> modelLearningRegressionAlgorithm =  new LinearRegressionMultiAlgorithmImpl();;
 		LinearRegressionMultiHypothesisFunction learnedDistanceToTargetHyp = modelLearningRegressionAlgorithm
 				.getOptimalHypothesisFunction(
 						stateActionStateHistory
-								.getInitialStateActionHistory(new DroneStateActionLinearRegressionFeaturesMapper2<A>(recentActionCount)),
+								.getInitialStateActionHistory(new DroneStateActionLinearRegressionFeaturesMapper<A>(recentActionCount,recentActionsAndLatestActionMask)),
 								stateActionStateHistory.getEndStateHistory(new DroneStatePositionVelocityLabelMapper()), context);
 
 		System.out.println("Learned Delta Position/Velocity Hypothesis Function");

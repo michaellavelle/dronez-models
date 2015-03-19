@@ -54,7 +54,11 @@ public class SingleDimensionDroneModelLearner<A extends NumericAction> implement
 	private String dimensionName;
 	private int recentActionCount;
 	
-	public SingleDimensionDroneModelLearner(double minimumPosition,double maximumPosition,double minimumVelocity,double maximumVelocity,String dimensionName,int recentActionCount)
+	private boolean[] recentActionsAndLatestActionMask;
+	
+	
+	public SingleDimensionDroneModelLearner(double minimumPosition,double maximumPosition,double minimumVelocity,double maximumVelocity,String dimensionName,int recentActionCount,	
+		boolean[] recentActionsAndLatestActionMask)
 	{
 		this.minimumPosition = minimumPosition;
 		this.maximumPosition = maximumPosition;
@@ -62,6 +66,7 @@ public class SingleDimensionDroneModelLearner<A extends NumericAction> implement
 		this.maximumVelocity = maximumVelocity;
 		this.dimensionName = dimensionName;
 		this.recentActionCount = recentActionCount;
+		this.recentActionsAndLatestActionMask = recentActionsAndLatestActionMask;
 	}
 	
 	@Override
@@ -102,7 +107,7 @@ public class SingleDimensionDroneModelLearner<A extends NumericAction> implement
 	
 	private SingleDimensionPositionDeltaModelLearner<A> createSingleDimensionPositionDeltaModelLearner(A firstAction) {
 		
-		return new SingleDimensionPositionDeltaModelLearner<A>(getAllActions(firstAction),recentActionCount);
+		return new SingleDimensionPositionDeltaModelLearner<A>(getAllActions(firstAction),recentActionCount,recentActionsAndLatestActionMask);
 	}
 
 }

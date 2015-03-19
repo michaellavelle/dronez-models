@@ -57,10 +57,14 @@ public class ModelLearningApplication<S extends Serializable,T extends Serializa
 		// Load our state action sequence history
 		StateActionSequenceHistory<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> history = StateActionSequenceHistoryConvertingLoader.getStateActionSequenceHistory("flight_11032015_2_swapped",recentActionCount);
 				
+	
+		// Consider only the first five recent actions, and ignore latest action
+		boolean[] recentActionsAndLatestActionMask 
+		 = new boolean[]{true,true,true,true,true,false,false,false,false,false,false };
 		
 		
 		// Create our model learner.
-		ModelLearner<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> modelLearner = new DroneModelLearner(recentActionCount);
+		ModelLearner<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> modelLearner = new DroneModelLearner(recentActionCount,recentActionsAndLatestActionMask);
 		
 		// Create a model learning application
 		ModelLearningApplication<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> modelLearningApplication = new ModelLearningApplication<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction>(modelLearner);
@@ -68,7 +72,7 @@ public class ModelLearningApplication<S extends Serializable,T extends Serializa
 		
 		
 		// Learn model from history, and serialize
-		modelLearningApplication.learnAndSerializeModel("droneModel_16032015_1",history);
+		modelLearningApplication.learnAndSerializeModel("droneModel_19032015_1",history);
 	
 
 	}

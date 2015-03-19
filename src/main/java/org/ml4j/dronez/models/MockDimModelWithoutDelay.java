@@ -54,12 +54,10 @@ public class MockDimModelWithoutDelay<A extends NumericAction> implements Model<
 	@Override
 	public TargetRelativePositionWithVelocityAndRecentActions<A> getState(
 			TargetRelativePositionWithVelocityAndRecentActions<A> state, A arg1) {
-		// TODO Auto-generated method stub
 		TargetRelativePositionWithVelocityAndRecentActions<A> newState
 		
 		 = new TargetRelativePositionWithVelocityAndRecentActions<A>(state.getPosition(),state.getVelocity(),fillOut10Actions(state.getRecentActions(),arg1));
-		
-		
+	
 		return model.getState(newState, arg1);
 	}
 

@@ -39,7 +39,7 @@ import org.ml4j.mdp.StateActionSequenceHistory;
  */
 public class ModelClientDemo {
 	
-	private static String modelId = "droneModel_16032015_1";
+	private static String modelId = "droneModel_19032015_1";
 
 	public static void main(String[] args)
 	{
