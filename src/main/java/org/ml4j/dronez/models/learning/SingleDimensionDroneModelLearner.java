@@ -44,7 +44,7 @@ import org.ml4j.util.SerializationHelper;
 public class SingleDimensionDroneModelLearner<A extends NumericAction> implements
 		ModelLearner<PositionVelocityWithRecentActions<A>, PositionVelocityWithRecentActions<A>, A> {
 
-	private	SerializationHelper serializationHelper = new SerializationHelper(SingleDimensionDroneModelLearner.class.getClassLoader(),"org/ml4j/dronez/models");
+	private	SerializationHelper serializationHelper;
 
 	
 	private double minimumPosition;
@@ -57,7 +57,7 @@ public class SingleDimensionDroneModelLearner<A extends NumericAction> implement
 	private boolean[] recentActionsAndLatestActionMask;
 	
 	
-	public SingleDimensionDroneModelLearner(double minimumPosition,double maximumPosition,double minimumVelocity,double maximumVelocity,String dimensionName,int recentActionCount,	
+	public SingleDimensionDroneModelLearner(SerializationHelper serializationHelper,double minimumPosition,double maximumPosition,double minimumVelocity,double maximumVelocity,String dimensionName,int recentActionCount,	
 		boolean[] recentActionsAndLatestActionMask)
 	{
 		this.minimumPosition = minimumPosition;
@@ -67,6 +67,7 @@ public class SingleDimensionDroneModelLearner<A extends NumericAction> implement
 		this.dimensionName = dimensionName;
 		this.recentActionCount = recentActionCount;
 		this.recentActionsAndLatestActionMask = recentActionsAndLatestActionMask;
+		this.serializationHelper = serializationHelper;
 	}
 	
 	@Override

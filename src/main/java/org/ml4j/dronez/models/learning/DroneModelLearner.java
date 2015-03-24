@@ -30,6 +30,7 @@ import org.ml4j.dronez.models.DroneModel;
 import org.ml4j.dronez.models.DummySpinModel;
 import org.ml4j.mdp.Model;
 import org.ml4j.mdp.StateActionSequenceHistory;
+import org.ml4j.util.SerializationHelper;
 
 /**
  * DroneModelLearner which uses 4 instances of SingleDimensionDroneModelLearner to generate independent Models for left/right,up/down,forward/back and spin dimensions,
@@ -45,16 +46,18 @@ public class DroneModelLearner implements ModelLearner<DroneStateWithRecentActio
 	
 	private <A extends NumericAction> SingleDimensionDroneModelLearner<A> createSingleDimensionDroneModelLearner(Class<A> clazz,double minimumPosition,double maximumPosition,double minimumVelocity,double maximumVelocity)
 	{
-		return new SingleDimensionDroneModelLearner<A>(minimumPosition,maximumPosition,minimumVelocity,maximumVelocity,clazz.getSimpleName(),recentActionCount,recentActionsAndLatestActionMask);
+		return new SingleDimensionDroneModelLearner<A>(serializationHelper,minimumPosition,maximumPosition,minimumVelocity,maximumVelocity,clazz.getSimpleName(),recentActionCount,recentActionsAndLatestActionMask);
 	}
 
 	private int recentActionCount;
+	private SerializationHelper serializationHelper;
 	
 	private boolean[] recentActionsAndLatestActionMask;
-	public DroneModelLearner(int recentActionCount,boolean[] recentActionsAndLatestActionMask)
+	public DroneModelLearner(int recentActionCount,boolean[] recentActionsAndLatestActionMask,SerializationHelper serializationHelper)
 	{
 		this.recentActionCount = recentActionCount;
 		this.recentActionsAndLatestActionMask = recentActionsAndLatestActionMask;
+		this.serializationHelper = serializationHelper;
 	}
 	
 	@Override

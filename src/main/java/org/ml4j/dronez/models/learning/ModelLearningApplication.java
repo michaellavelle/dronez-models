@@ -19,7 +19,6 @@ import java.io.Serializable;
 
 import org.ml4j.dronez.DroneAction;
 import org.ml4j.dronez.DroneStateWithRecentActions;
-import org.ml4j.dronez.PositionVelocityWithRecentActions;
 import org.ml4j.dronez.util.StateActionSequenceHistoryConvertingLoader;
 import org.ml4j.mdp.Model;
 import org.ml4j.mdp.StateActionSequenceHistory;
@@ -63,8 +62,10 @@ public class ModelLearningApplication<S extends Serializable,T extends Serializa
 		 = new boolean[]{true,false,false,false,false,false,false,false,false,false,false };
 		
 		
+		SerializationHelper serializationHelper = new SerializationHelper(SingleDimensionDroneModelLearner.class.getClassLoader(),"org/ml4j/dronez/models");
+		
 		// Create our model learner.
-		ModelLearner<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> modelLearner = new DroneModelLearner(recentActionCount,recentActionsAndLatestActionMask);
+		ModelLearner<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> modelLearner = new DroneModelLearner(recentActionCount,recentActionsAndLatestActionMask,serializationHelper);
 		
 		// Create a model learning application
 		ModelLearningApplication<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> modelLearningApplication = new ModelLearningApplication<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction>(modelLearner);

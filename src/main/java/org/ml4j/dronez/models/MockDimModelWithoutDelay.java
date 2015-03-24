@@ -24,8 +24,9 @@ public class MockDimModelWithoutDelay<A extends NumericAction> implements Model<
 	private Model<TargetRelativePositionWithVelocityAndRecentActions<A>, TargetRelativePositionWithVelocityAndRecentActions<A>, A> model;
 	private A noOpAction;
 	private Integer delayToRemoveInIterations;
+	private int modelWithDelayRecentActionCount;
 	
-	public MockDimModelWithoutDelay(Model<TargetRelativePositionWithVelocityAndRecentActions<A>, TargetRelativePositionWithVelocityAndRecentActions<A>, A> model,A noOpAction,int delayToRemoveInIterations)
+	public MockDimModelWithoutDelay(Model<TargetRelativePositionWithVelocityAndRecentActions<A>, TargetRelativePositionWithVelocityAndRecentActions<A>, A> model,A noOpAction,int modelWithDelayRecentActionCount,int delayToRemoveInIterations)
 	{
 		this.model = model;
 		this.noOpAction = noOpAction;
@@ -46,15 +47,41 @@ public class MockDimModelWithoutDelay<A extends NumericAction> implements Model<
 		return delayToRemoveInIterations;
 	}
 	
-	private List<A> fillOut10Actions(List<A> actions,A action)
+	private List<A> fillOutModelActions(List<A> actions,A action)
 	{
 		List<A> newActions = new ArrayList<A>();
-		newActions.addAll(actions);
-		newActions.add(action);
+		/*
+		int modelActionCount = actions.size() - getDelayToRemoveInIterations();
+		List<A> allActions = new ArrayList<A>();
+		
+		allActions.addAll(actions);
+		allActions.add(action);
+		for (int i = 0; i < modelActionCount; i++ )
+		{
+			newActions.add(allActions.get(i));
+		}
+		
 		for (int i = 0; i < getDelayToRemoveInIterations() - 1; i++)
 		{
 			newActions.add(noOpAction);
 		}
+		
+		*/
+		
+
+		int newRecentActionCount = modelWithDelayRecentActionCount - getDelayToRemoveInIterations() - 1;
+		for (int i = actions.size() - newRecentActionCount - 1; i < actions.size(); i++)
+		{
+			newActions.add(actions.get(i));
+		}
+		
+		newActions.add(action);
+		for (int i = 0; i < getDelayToRemoveInIterations(); i++)
+		{
+			newActions.add(noOpAction);
+
+		}
+		
 		return newActions;
 	}
 	
@@ -64,7 +91,7 @@ public class MockDimModelWithoutDelay<A extends NumericAction> implements Model<
 		
 		TargetRelativePositionWithVelocityAndRecentActions<A> state = model.getInitialState();
 		
-		return new TargetRelativePositionWithVelocityAndRecentActions<A>(state.getPosition(),state.getVelocity(),fillOut10Actions(state.getRecentActions(),noOpAction));
+		return new TargetRelativePositionWithVelocityAndRecentActions<A>(state.getPosition(),state.getVelocity(),fillOutModelActions(state.getRecentActions(),noOpAction));
 	}
 
 	@Override
@@ -72,7 +99,7 @@ public class MockDimModelWithoutDelay<A extends NumericAction> implements Model<
 			TargetRelativePositionWithVelocityAndRecentActions<A> state, A arg1) {
 		TargetRelativePositionWithVelocityAndRecentActions<A> newState
 		
-		 = new TargetRelativePositionWithVelocityAndRecentActions<A>(state.getPosition(),state.getVelocity(),fillOut10Actions(state.getRecentActions(),arg1));
+		 = new TargetRelativePositionWithVelocityAndRecentActions<A>(state.getPosition(),state.getVelocity(),fillOutModelActions(state.getRecentActions(),arg1));
 	
 		return model.getState(newState, arg1);
 	}

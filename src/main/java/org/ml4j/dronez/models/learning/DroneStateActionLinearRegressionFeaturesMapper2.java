@@ -72,7 +72,7 @@ public class DroneStateActionLinearRegressionFeaturesMapper2<A extends NumericAc
 	public double[] toFeaturesVector(StateAction<VelocityAndRecentActions<A>, A> data) {
 		
 		
-		int actionIndex = data.getAction().ordinal();
+		//int actionIndex = data.getAction().ordinal();
 		double[] features = new double[getFeatureCount()];
 		features[0] = 1d;
 		features[1] = data.getState().getVelocity();

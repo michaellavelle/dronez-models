@@ -21,7 +21,6 @@ import java.util.Arrays;
 import org.ml4j.dronez.ForwardBackAction;
 import org.ml4j.dronez.LeftRightAction;
 import org.ml4j.dronez.LinearApproximationDeltaPositionWithVelocityModel;
-import org.ml4j.dronez.PositionVelocityWithRecentActions;
 import org.ml4j.dronez.SpinAction;
 import org.ml4j.dronez.UpDownAction;
 import org.ml4j.dronez.models.SingleDimensionDroneDistanceToTargetPositionModel;
