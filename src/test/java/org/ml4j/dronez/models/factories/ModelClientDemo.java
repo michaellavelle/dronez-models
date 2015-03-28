@@ -22,6 +22,7 @@ import org.ml4j.dronez.DroneAction;
 import org.ml4j.dronez.DroneState;
 import org.ml4j.dronez.DroneStateActionSequenceDisplayer;
 import org.ml4j.dronez.DroneStateWithRecentActions;
+import org.ml4j.dronez.models.StatefulDroneStateWithoutActionsModelAdapter;
 import org.ml4j.dronez.models.learning.DroneModelLearner;
 import org.ml4j.dronez.util.StateActionSequenceHistoryConvertingLoader;
 import org.ml4j.mapping.LabeledData;
@@ -39,7 +40,7 @@ import org.ml4j.mdp.StateActionSequenceHistory;
  */
 public class ModelClientDemo {
 	
-	private static String modelId = "droneModel_19032015_7";
+	private static String modelId = "droneModel_27032015_1";
 
 	public static void main(String[] args)
 	{
@@ -50,17 +51,19 @@ public class ModelClientDemo {
 		// Create Model by id
 		Model<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> model = droneModelFactory.createModel(modelId);
 		
-		
-		
+
 		//int modelRecentActionCount = PositionVelocityWithRecentActions.DEFAULT_RECENT_ACTION_COUNT;
 		int modelRecentActionCount = 10;
 		
+		
+		Model<DroneState,DroneState,DroneAction> model2 = new StatefulDroneStateWithoutActionsModelAdapter(model,modelRecentActionCount);
+		
 		// Load a state action history that we can use to evaluate the Model
-		StateActionSequenceHistory<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> history = StateActionSequenceHistoryConvertingLoader.getStateActionSequenceHistory("flight_11032015_2_swapped",modelRecentActionCount);
+		StateActionSequenceHistory<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> history = StateActionSequenceHistoryConvertingLoader.getStateActionSequenceHistory("flight_1427205232845",modelRecentActionCount);
 
 		// Replay the history ( 150ms between actions), and display the Model-generated trajectory along with the actual trajectory
 		DroneStateActionSequenceDisplayer<DroneStateWithRecentActions,DroneAction> displayer = new DroneStateActionSequenceDisplayer<DroneStateWithRecentActions,DroneAction>();
-		displayer.setTargetTrajectory(new ModelGeneratedDroneStateTrajectory(model,getInitialState(history,modelRecentActionCount),getHistoricalActions(history),modelRecentActionCount),true);
+		displayer.setTargetTrajectory(new ModelGeneratedDroneStateTrajectory(model2,getInitialState(history,modelRecentActionCount),getHistoricalActions(history),modelRecentActionCount),true);
 		history.replay(displayer, 150);
 		
 	}

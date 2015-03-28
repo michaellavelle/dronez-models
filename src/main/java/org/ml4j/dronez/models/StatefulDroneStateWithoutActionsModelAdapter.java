@@ -46,13 +46,13 @@ public class StatefulDroneStateWithoutActionsModelAdapter implements Model<Drone
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-	private DroneModel droneModel;
+	private Model<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> droneModel;
 	private List<DroneAction> takenActions;
 	private int iteration = 0;
 	private DroneState previousDroneState;
 	private int modelRecentActionCount;
 		
-	public StatefulDroneStateWithoutActionsModelAdapter(DroneModel droneModel,int modelRecentActionCount)
+	public StatefulDroneStateWithoutActionsModelAdapter(Model<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> droneModel,int modelRecentActionCount)
 	{
 		this.droneModel = droneModel;
 		this.takenActions = new ArrayList<DroneAction>();

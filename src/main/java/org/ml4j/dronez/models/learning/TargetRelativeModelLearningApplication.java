@@ -55,10 +55,10 @@ public class TargetRelativeModelLearningApplication<S extends Serializable,T ext
 		
 		
 		// Learn model from history, and serialize
-		serializationHelper.serialize(distanceToTargetPositionLeftRightModel, "distanceToTargetPositionLeftRightModel_19032015_7");
-		serializationHelper.serialize(distanceToTargetPositionUpDownModel, "distanceToTargetPositionUpDownModel_19032015_7");
-		serializationHelper.serialize(distanceToTargetPositionForwardBackModel, "distanceToTargetPositionForwardBackModel_19032015_7");
-		serializationHelper.serialize(distanceToTargetPositionSpinModel, "distanceToTargetPositionSpinModel_19032015_7");
+		serializationHelper.serialize(distanceToTargetPositionLeftRightModel, "distanceToTargetPositionLeftRightModel_27032015_1");
+		serializationHelper.serialize(distanceToTargetPositionUpDownModel, "distanceToTargetPositionUpDownModel_27032015_1");
+		serializationHelper.serialize(distanceToTargetPositionForwardBackModel, "distanceToTargetPositionForwardBackModel_27032015_1");
+		serializationHelper.serialize(distanceToTargetPositionSpinModel, "distanceToTargetPositionSpinModel_27032015_1");
 
 	}
 	

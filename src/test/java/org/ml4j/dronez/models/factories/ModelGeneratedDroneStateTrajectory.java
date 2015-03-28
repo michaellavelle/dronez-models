@@ -42,14 +42,14 @@ import org.ml4j.mdp.Trajectory;
  */
 public class ModelGeneratedDroneStateTrajectory implements Trajectory<DroneState> {
 
-	private Model<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> model;
+	private Model<DroneState,DroneState,DroneAction> model;
 	
 	private DroneState initialDroneState;
-	private DroneStateWithRecentActions currentState;
+	private DroneState currentState;
 	private List<DroneAction> actions;
 	private int recentActionCount;
 	
-	public ModelGeneratedDroneStateTrajectory(Model<DroneStateWithRecentActions,DroneStateWithRecentActions,DroneAction> model,DroneState initialState,List<DroneAction> actions,int recentActionCount)
+	public ModelGeneratedDroneStateTrajectory(Model<DroneState,DroneState,DroneAction> model,DroneState initialState,List<DroneAction> actions,int recentActionCount)
 	{
 		this.model = model;
 		this.initialDroneState = initialState;
@@ -68,13 +68,7 @@ public class ModelGeneratedDroneStateTrajectory implements Trajectory<DroneState
 		
 		if (iteration == recentActionCount)
 		{
-			PositionVelocityWithRecentActions<LeftRightAction> lr = new PositionVelocityWithRecentActions<LeftRightAction>(initialDroneState.getLeftRightPositionVelocity().getPosition(),initialDroneState.getLeftRightPositionVelocity().getVelocity(),getRecentActions((int)iteration,new LeftRightActionExtractor()));
-			PositionVelocityWithRecentActions<UpDownAction> ud = new PositionVelocityWithRecentActions<UpDownAction>(initialDroneState.getUpDownPositionVelocity().getPosition(),initialDroneState.getUpDownPositionVelocity().getVelocity(),getRecentActions((int)iteration,new UpDownActionExtractor()));
-			PositionVelocityWithRecentActions<ForwardBackAction> fb = new PositionVelocityWithRecentActions<ForwardBackAction>(initialDroneState.getForwardBackPositionVelocity().getPosition(),initialDroneState.getForwardBackPositionVelocity().getVelocity(),getRecentActions((int)iteration,new ForwardBackActionExtractor()));
-			PositionVelocityWithRecentActions<SpinAction> s = new PositionVelocityWithRecentActions<SpinAction>(initialDroneState.getSpinPositionVelocity().getPosition(),initialDroneState.getSpinPositionVelocity().getVelocity(),getRecentActions((int)iteration,new SpinActionExtractor()));
-		
-			
-			currentState = new DroneStateWithRecentActions(lr,ud,fb,s);
+			currentState = initialDroneState;
 		}
 		else
 		{
@@ -84,14 +78,5 @@ public class ModelGeneratedDroneStateTrajectory implements Trajectory<DroneState
 	}
 
 
-	private <A> List<A> getRecentActions(int iteration,ActionExtractor<A> actionExtractor)
-	{
-		List<DroneAction> recentActions = new ArrayList<DroneAction>();
-		for (int i = 0; i < recentActionCount; i++)
-		{
-			recentActions.add(actions.get(iteration - recentActionCount + i));
-		}
-		return actionExtractor.getActions(recentActions);
-	}
 	
 }

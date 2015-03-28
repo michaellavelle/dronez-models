@@ -77,7 +77,7 @@ public class DroneStateActionLinearRegressionFeaturesMapper2<A extends NumericAc
 		features[0] = 1d;
 		features[1] = data.getState().getVelocity();
 		for (int i = 0; i < recentActionCount - 5; i++) {
-			features[i + 2] = data.getState().getRecentActions().get(i).ordinal();
+			features[i + 2] = data.getState().getRecentActions().get(i).getValue();
 		}
 		//features[features.length - 1] = actionIndex;
 		return features;
