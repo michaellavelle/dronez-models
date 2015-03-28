@@ -50,7 +50,7 @@ public class ModelLearningApplication<S extends Serializable,T extends Serializa
 	public static void main(String[] args)
 	{
 		//int recentActionCount = PositionVelocityWithRecentActions.DEFAULT_RECENT_ACTION_COUNT;
-		int recentActionCount = 6;
+		int recentActionCount = 10;
 		
 		
 		// Load our state action sequence history
@@ -59,7 +59,7 @@ public class ModelLearningApplication<S extends Serializable,T extends Serializa
 	
 		// Consider only the first five recent actions, and ignore latest action
 		boolean[] recentActionsAndLatestActionMask 
-		 = new boolean[]{true,false,false,false,false,false,false };
+		 = new boolean[]{true,true,true,true,true,false,false,false,false,false,false };
 		
 		
 		SerializationHelper serializationHelper = new SerializationHelper(SingleDimensionDroneModelLearner.class.getClassLoader(),"org/ml4j/dronez/models");
@@ -73,7 +73,7 @@ public class ModelLearningApplication<S extends Serializable,T extends Serializa
 		
 		
 		// Learn model from history, and serialize
-		modelLearningApplication.learnAndSerializeModel("droneModel_28032015_1",history);
+		modelLearningApplication.learnAndSerializeModel("droneModel_28032015_2",history);
 	
 
 	}
