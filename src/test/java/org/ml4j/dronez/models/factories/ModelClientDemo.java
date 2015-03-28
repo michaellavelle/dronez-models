@@ -40,7 +40,7 @@ import org.ml4j.mdp.StateActionSequenceHistory;
  */
 public class ModelClientDemo {
 	
-	private static String modelId = "droneModel_27032015_1";
+	private static String modelId = "droneModel_28032015_1";
 
 	public static void main(String[] args)
 	{
@@ -53,7 +53,7 @@ public class ModelClientDemo {
 		
 
 		//int modelRecentActionCount = PositionVelocityWithRecentActions.DEFAULT_RECENT_ACTION_COUNT;
-		int modelRecentActionCount = 10;
+		int modelRecentActionCount = 6;
 		
 		
 		Model<DroneState,DroneState,DroneAction> model2 = new StatefulDroneStateWithoutActionsModelAdapter(model,modelRecentActionCount);
