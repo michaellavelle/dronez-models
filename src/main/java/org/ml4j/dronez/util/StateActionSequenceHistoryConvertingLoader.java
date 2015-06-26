@@ -145,7 +145,7 @@ public class StateActionSequenceHistoryConvertingLoader {
 
 		List<DroneAction> actions = new ArrayList<DroneAction>();
 		for (int iteration = currentIteration
-				- recentActionCount; iteration <= currentIteration; iteration++) {
+				- recentActionCount; iteration < currentIteration; iteration++) {
 			LabeledData<StateAction<DroneState, DroneAction>, DroneState> data = history
 					.getStateActionStateSequence(iteration);
 			actions.add(data.getData().getAction());
